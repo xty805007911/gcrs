@@ -1,6 +1,7 @@
 package com.ctsi.rpc;
 
 import com.alibaba.fastjson.JSON;
+import com.ctsi.vo.baidu.BaiduIpAddress;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -26,9 +27,8 @@ public class BaiduRpc {
         }
         String jsonStr = document.body().text().toString();
         System.out.println(jsonStr);
-        Object parse = JSON.parse(jsonStr);
+        return JSON.parseObject(jsonStr,HashMap.class);
 
-        return (HashMap) parse;
     }
 
 }

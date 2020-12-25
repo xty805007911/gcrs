@@ -38,7 +38,6 @@ public class TestController {
     @ResponseBody
     public Object test2(HttpServletRequest request,String ip) throws IOException {
 
-
         return BaiduRpc.getAddressByIp(ip);
     }
 
