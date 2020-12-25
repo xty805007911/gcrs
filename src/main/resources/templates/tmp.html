@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+  <title>模板页面</title>
+
+    <!--Begin  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+     <!--End  Page Level  CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="js/html5shiv.min.js"></script>
+          <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="sticky-header">
+
+
+<!--引入左侧菜单栏-->
+<div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+
+    <!-- main content start-->
+<div class="main-content" >
+<div th:replace="header :: headerBar"></div>
+        <!--body wrapper start-->
+        <div class="wrapper">
+          <!--Start Page Title-->
+           <div class="page-title-box">
+                <h4 class="page-title">活动</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">活动</a>
+                    </li>
+
+                    <li class="active">
+                        活动
+                    </li>
+                </ol>
+                <div class="clearfix"></div>
+             </div>
+              <!--End Page Title-->
+
+                   <!--Start row-->
+                   <div class="row">
+
+                     <!-- Start inbox widget-->
+                     <div class="col-md-12">
+                        <div class="white-box">
+                          <h2 class="header-title"> Projects </h2>
+                            <div class="table-responsive">
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Project Name</th>
+                                    <th >Start Date</th>
+                                    <th>Deadline Date</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>1</td>
+                                    <td>Design new theme</td>
+                                    <td>10/10/2016</td>
+                                    <td>12/11/2016</td>
+                                    <td><span class="label label-warning">Pending</span></td>
+                                    <td><div class="progress progress-striped progress-sm">
+                                      <div class="progress-bar progress-bar-warning" style="width: 25%;"></div>
+                                    </div></td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td>Website Redesign</td>
+                                    <td>10/10/2016</td>
+                                   <td>12/11/2016</td>
+                                    <td><span class="label label-success">In Progress</span></td>
+                                    <td><div class="progress progress-striped progress-sm">
+                                      <div class="progress-bar progress-bar-success" style="width: 25%;"></div>
+                                    </div></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                        </div>
+                       </div>
+					<!-- Start inbox widget-->
+                   </div>
+                   <!--End row-->
+
+			    </div>
+        <!-- End Wrapper-->
+
+
+        <!--Start  Footer -->
+        <div th:replace="footer :: footerBar"></div>
+         <!--End footer -->
+
+       </div>
+      <!--End main content -->
+
+
+
+    <!--Begin core plugin -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/moment/moment.js"></script>
+    <script  src="/assets/js/jquery.slimscroll.js "></script>
+    <script src="/assets/js/jquery.nicescroll.js"></script>
+    <script src="/assets/js/functions.js"></script>
+    <!-- End core plugin -->
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD Ctsi MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/ctsi-mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  
+
+  <context id="microservicebackend" targetRuntime="com.ctsi.biyi.generator.plugins.IntrospectedTableBiyiMyBatis3Impl"> 
+	
+	<property name="databaseDialect" value="mysql"/>
+	
+	<property name="dataAccess" value="mybatis"/>
+	
+	<property name="useES" value="false"/>
+	
+	<property name="autoDelimitKeywords" value="true"/>
+	
+    <property name="beginningDelimiter" value="`"/>
+    
+    <property name="endingDelimiter" value="`"/>
+	
+    <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+	
+    <plugin type="com.ctsi.biyi.generator.plugins.SerializableBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.MapperAnnotationBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.ExampleBiyiPlugin" />
+
+    <plugin type="com.ctsi.biyi.generator.plugins.ClassCommentPlugin" />
+    
+    <plugin type="com.ctsi.biyi.generator.plugins.ServicePlugin" > 
+        <property name="importPackage" value="com.ctsi"/>
+        <property name="targetPackage" value="com.ctsi"/>
+        <property name="targetProject" value="src/main/java"/>
+    </plugin>
+    
+    <plugin type="com.ctsi.biyi.generator.plugins.UnitSelectPlugin" > 
+        <property name="importPackage" value="com.ctsi"/>
+        <property name="targetPackage" value="com.ctsi"/>
+        <property name="targetProject" value="src/main/java"/>  
+    </plugin>
+    
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://47.92.212.63:3306/appweb?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false"
+        userId="root"
+        password="bjfu1022">
+    </jdbcConnection> 
+    
+    
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="com.ctsi.entity" targetProject="src/main/java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+
+    <table tableName="tb_menu">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" sqlStatement="mysql" identity="true" />
+    </table>
+
+    <table tableName="tb_role">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" sqlStatement="mysql" identity="true" />
+    </table>
+
+    <table tableName="tb_role_menu">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" sqlStatement="mysql" identity="true" />
+    </table>
+
+    <table tableName="tb_user_role">
+      <property name="useActualColumnNames" value="false"/>
+      <generatedKey column="id" sqlStatement="mysql" identity="true" />
+    </table>
+
+
+       
+  </context>
+</generatorConfiguration>

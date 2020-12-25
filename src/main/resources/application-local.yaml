@@ -1,0 +1,36 @@
+server:
+  port: 80
+
+swagger:
+  enable: true
+
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        # 读数据库
+        master:
+          url: jdbc:mysql://47.105.176.145:3306/db_gcrs?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          type: com.zaxxer.hikari.HikariDataSource
+          hikari:
+              maximumPoolSize: 20
+              data-source-properties:
+                  cachePrepStmts: true
+                  prepStmtCacheSize: 250
+                  prepStmtCacheSqlLimit: 20481
+                  useServerPrepStmts: true
+              minimum-idle: 3
+              max-lifetime: 30000
+              connection-test-query: SELECT 1
+  thymeleaf:
+    cache: false
+minio:
+  endpoint: http://47.105.176.145:8082/
+  accesskey: adminkey
+  ascretkey: adminpass
+mybatis-plus:
+  configuration:
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
