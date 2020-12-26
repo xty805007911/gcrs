@@ -6,7 +6,7 @@
             <div class="menu-right" id="app">
 
                 
-                <a type="button" class="btn btn-success" th:if="${session.sessionUser==null}" th:href="@{/toLogin}">login</a>
+                <a type="button" class="btn btn-primary" th:if="${session.sessionUser==null}" th:href="@{/toLogin}">login</a>
 
                 <ul class="notification-menu" th:if="${session.sessionUser!=null}">
 

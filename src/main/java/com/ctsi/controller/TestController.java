@@ -31,7 +31,7 @@ public class TestController {
             System.out.println();
             map.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
             request.getSession().setAttribute("sessionUser",map);
-        }
+    }
         return "user/user-index.html";
     }
 
