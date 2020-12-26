@@ -3,6 +3,7 @@ package com.ctsi.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -31,6 +32,13 @@ public class PageToController {
             request.getSession().setAttribute("sessionUser",map);
         }
         return "user/user-index";
+    }
+
+    //去登陆页面
+    @RequestMapping("/toLogin")
+    public String toLogin(HttpServletRequest request) {
+        request.setAttribute("msg","");
+        return "login";
     }
 
 }
