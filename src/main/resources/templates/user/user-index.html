@@ -2,73 +2,80 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-  <title>模板页面</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <title>用户地图首页</title>
 
     <!--Begin  Page Level  CSS -->
-    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
-     <!--End  Page Level  CSS -->
+    <link href="/assets/plugins/morris-chart/morris.css" rel="stylesheet">
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <!--End  Page Level  CSS -->
     <link href="/assets/css/icons.css" rel="stylesheet">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/responsive.css" rel="stylesheet">
-
-<style>
-    body,
-    html,
-    #usermap {
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        font-family: "微软雅黑";
-    }
-</style>
 
 </head>
 
 <body class="sticky-header">
 
 
-<!--引入左侧菜单栏-->
-<div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+    <!--引入左侧菜单栏-->
+    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
 
     <!-- main content start-->
-<div class="main-content" >
-<div th:replace="header :: headerBar"></div>
+    <div class="main-content" id="app">
+        <div th:replace="header :: headerBar"></div>
+
+
         <!--body wrapper start-->
-        <div class="wrapper" id="app">
+        <div class="wrapper">
             <!--Start row-->
-             <div class="row">
+            <div class="row">
 
                 <!-- Start inbox widget-->
                 <div class="col-md-8">
-                <div class="white-box">
-                    <h2 class="header-title"> 地图展示 </h2>
-                    <div id="usermap" style="height: 600px;"></div>
-                </div>
-                
-                </div>
-                <!-- Start inbox widget-->
-                
-                <div class="col-md-4">
-                    <div class="white-box" >
-                        <h2 class="header-title"> 我的取件地点 </h2>
-                        <div>
-                            大兴区金融界融汇小区
+                    <div class="white-box">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <div id="usermap" style="height: 500px;"></div>
+                            </table>
                         </div>
                     </div>
-                    
+                </div>
+                <!-- Start inbox widget-->
+
+                <!-- Start inbox widget-->
+                <div class="col-md-4">
+                    <div class="white-box">
+                        <h2 class="header-title"> 详细信息</h2>
+                        <div class="dash-box">
+                            <div class="dash-icon bg-primary"> <i class="fa fa-magic"></i> </div>
+                            <div class="dash-info">
+                                <h4>
+                                    <span v-if="province!=''">{{province}}</span>
+                                    <span v-if="city!=''">{{city}}</span>
+                                    <span v-if="district!=''">{{district}}</span>
+                                </h4>
+                                <p>
+                                    <div id="result_l"></div>
+                                    详细地址
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
+                <!-- Start inbox widget-->
+
+
+
             </div>
             <!--End row-->
-
-
 
         </div>
         <!-- End Wrapper-->
@@ -76,89 +83,132 @@
 
         <!--Start  Footer -->
         <div th:replace="footer :: footerBar"></div>
-         <!--End footer -->
+        <!--End footer -->
 
-       </div>
-      <!--End main content -->
+    </div>
+    <!--End main content -->
+
+
 </body>
 <script src="http://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
 <script src="http://cdn.staticfile.org/axios/0.19.2/axios.min.js"></script>
 <script src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=DvwyNimy8CXKEZG9Lxeo6G7zxBjxnsz8"></script>
 <script>
 
-    var map = new BMapGL.Map('usermap'); // 创建Map实例
-    map.centerAndZoom(new BMapGL.Point(116.404, 39.915), 12); // 初始化地图,设置中心点坐标和地图级别
-    map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
-    
+
+
     new Vue({
         el: '#app',
         data: {
-            ip:"",
+            ip: "",
             intervalId: null,
-            
+            x: 0.0,//经度
+            y: 0.0,//纬度
+            province: '',
+            city: '',
+            district: ''
+
         },
         methods: {
-            init() {
 
-                //1. 获取客户端ip
-                 axios.get("https://api.ipify.org/?format=jsonp&callback=?&_=" + Math.random()).then(response => {
+            init() {
+                // 1.获取客户端ip
+                axios.get("https://api.ipify.org/?format=jsonp&callback=?&_=" + Math.random()).then(response => {
                     var ip = response.data.split("\":\"")[1].split("\"})")[0];
                     this.ip = ip;
-                    alert("本地ip1:" +this.ip);
+                    //alert("本地ip:" + this.ip);
 
                     //2.根据ip获取客户端位置信息
-                    axios.get('/test2?ip='+this.ip).then(response => {
+                    axios.get('/api/address/detail?ip=' + this.ip).then(response => {
                         console.log(response.data)
+
+                        //设置经纬度
+                        this.x = response.data.content.point.x;
+                        this.y = response.data.content.point.y;
+
+                        console.log(this.x);
+
+                        //设置地址、位置字符串
+                        this.province = response.data.content.address_detail.province;
+                        this.city = response.data.content.address_detail.city;
+                        this.district = response.data.content.address_detail.district;
+
+
+                        var map = new BMapGL.Map('usermap'); // 创建Map实例
+                        map.centerAndZoom(new BMapGL.Point(this.x, this.y), 12); // 初始化地图,设置中心点坐标和地图级别
+                        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+                        // 创建城市选择控件
+                        var cityControl = new BMapGL.CityListControl({
+                            // 控件的停靠位置（可选，默认左上角）
+                            anchor: BMAP_ANCHOR_TOP_LEFT,
+                            // 控件基于停靠位置的偏移量（可选）
+                            offset: new BMapGL.Size(10, 5)
+                        });
+                        // 将控件添加到地图上
+                        map.addControl(cityControl);
+
+                        var geoc = new BMapGL.Geocoder();
+                        map.addEventListener('click', function (e) {
+                            //清除地图上所有的覆盖物
+                            map.clearOverlays();
+                            console.log(e);
+                            var pt = e.latlng;
+                            var marker = new BMapGL.Marker(new BMapGL.Point(pt.lng, pt.lat));
+                            map.addOverlay(marker);
+                            geoc.getLocation(pt, function (rs) {
+                                var addComp = rs.addressComponents;
+                                $('#result_l').text(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                            })
+                        })
+
+
                     });
 
-
-                 });
-
+                });
             },
 
 
-             // 定时刷新数据函数
+            // 定时刷新数据函数
             dataRefreh() {
-            // 计时器正在进行中，退出函数
-            if (this.intervalId != null) {
-                return;
-            }
-            // 计时器为空，操作
-            this.intervalId = setInterval(() => {
-                //console.log("刷新" + new Date());
-                //this.init(); //加载数据函数
-            }, 100000);
-            }, 
+                // 计时器正在进行中，退出函数
+                if (this.intervalId != null) {
+                    return;
+                }
+                // 计时器为空，操作
+                this.intervalId = setInterval(() => {
+                    //console.log("刷新" + new Date());
+                    //this.init(); //加载数据函数
+                }, 100000);
+            },
             // 停止定时器
             clear() {
-            clearInterval(this.intervalId); //清除计时器
-            this.intervalId = null; //设置为null
+                clearInterval(this.intervalId); //清除计时器
+                this.intervalId = null; //设置为null
             },
         },
         mounted() {
+            //this.getClientIP();
             this.init();
         },
-        created(){
+        created() {
             this.dataRefreh();
         },
-        destroyed(){
+        destroyed() {
             // 在页面销毁后，清除计时器
             this.clear();
         }
     });
-
-    
-    
-
-
 </script>
-    <!--Begin core plugin -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/plugins/moment/moment.js"></script>
-    <script  src="/assets/js/jquery.slimscroll.js "></script>
-    <script src="/assets/js/jquery.nicescroll.js"></script>
-    <script src="/assets/js/functions.js"></script>
+<!--Begin core plugin -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/plugins/moment/moment.js"></script>
+<script src="/assets/js/jquery.slimscroll.js "></script>
+<script src="/assets/js/jquery.nicescroll.js"></script>
+<script src="/assets/js/functions.js"></script>
+<!-- End core plugin -->
+
 
 
 </html>

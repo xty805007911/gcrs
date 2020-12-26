@@ -28,6 +28,7 @@ public class TestController {
         if(login != null && login == 1) {
             HashMap<String,String> map = new HashMap<>();
             map.put("realname","xty111");
+            System.out.println();
             map.put("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
             request.getSession().setAttribute("sessionUser",map);
         }
@@ -42,11 +43,10 @@ public class TestController {
     }
 
     @GetMapping("/test3")
-    @ResponseBody
     public Object test3() throws IOException {
 
 
-        return "succ";
+        return "tmp";
     }
 
 
