@@ -34,4 +34,13 @@ public class OrderController {
 
         return "redirect:/";
     }
+
+    //根据用户id查询订单详情
+    @RequestMapping("/order/detail/user/{userId}")
+    public String getOrderDetailByUserId() {
+
+        return null;
+    }
+
+
 }

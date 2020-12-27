@@ -250,6 +250,11 @@
                         // 将控件添加到地图上
                         map.addControl(cityControl);
 
+                        //标点前初始化：将根据ip的定位点发送标出来
+                        var point = new BMapGL.Point(this.x, this.y);//创建点标注
+                        var marker = new BMapGL.Marker(point);
+                        map.addOverlay(marker);
+
                         //点击标点
                         var geoc = new BMapGL.Geocoder();
                         map.addEventListener('click', function (e) {

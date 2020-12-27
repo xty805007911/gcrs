@@ -34,5 +34,11 @@ public class TbOrderService {
         tbOrderMapper.insert(tbOrder);
     }
 
+    //根据用户id查询订单详情
+    public TbOrder getOrderByUserId(Integer userId) {
+
+        return null;
+    }
+
 
 }
