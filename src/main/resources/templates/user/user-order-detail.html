@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+  <title>模板页面</title>
+
+    <!--Begin  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+     <!--End  Page Level  CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="js/html5shiv.min.js"></script>
+          <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="sticky-header">
+
+
+<!--引入左侧菜单栏-->
+<div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+
+    <!-- main content start-->
+<div class="main-content" >
+<div th:replace="header :: headerBar"></div>
+        <!--body wrapper start-->
+        <div class="wrapper">
+          <!--Start Page Title-->
+           <div class="page-title-box">
+                <h4 class="page-title">活动</h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">活动</a>
+                    </li>
+
+                    <li class="active">
+                        活动
+                    </li>
+                </ol>
+                <div class="clearfix"></div>
+             </div>
+              <!--End Page Title-->
+
+
+              <!--Start row-->
+              <div class="row">
+                  <div class="col-md-8">
+                    <div class="white-box">
+                        <form>
+                           <div class="form-group">
+                               <textarea rows="2" class="form-control" placeholder="Post a new message"></textarea>
+                           </div>
+                           
+                           <input type="submit" value="Post" class="btn btn-primary pull-right">
+                           
+                            <ul class="nav nav-pills m-t-20 post-list">
+                                <li>
+                                    <a href="#"><i class="fa fa-user"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-location-arrow"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class=" fa fa-camera"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-smile-o"></i></a>
+                                </li>
+                            </ul>
+                           
+                        </form>
+                    </div> <!--/.hite-box-->
+                                      
+                      <div class="white-box">
+                          <div class="post-header">
+                          <div class="post-author-media">
+                              <img src="assets/images/profile-picture.png"  alt="">
+                          </div>
+                          
+                          <div class="post-author">
+                            <h4>Jonathan Doe</h4>
+                            <p>2 hours ago</p>
+                          </div>
+                          </div> <!-- /.post-header-->
+                          
+                          <div class="post-desc">
+                              <p>Lorem ipsum dolor sit amet, in per dicit graecis evertitur, sed ex labitur virtute neglegentur, quod zril decore ei qui. Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
+                          </div>
+                          
+                          <div class="comment-info">
+                              <ul>
+                                <li> <a href="#"><i class="fa fa-thumbs-up"></i> Like (4)</a></li>
+                                <li> <a href="#"><i class="fa fa-comment"></i> Comment (8)</a></li>
+                                <li> <a href="#"><i class="fa fa-comment"></i> Share (12)</a></li>
+                              </ul>
+                          </div>
+                         
+                         
+                         <div class="timeline-comment">
+                             <img src="assets/images/profile-picture.png"  alt="">
+                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
+                             <div class="comment-text">
+                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
+                             </div>
+                         </div> <!--/.timeline-comment-->
+                         
+                         <div class="timeline-comment">
+                             <img src="assets/images/profile-picture.png"  alt="">
+                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
+                             <div class="comment-text">
+                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
+                             </div>
+                         </div> <!--/.timeline-comment-->
+                         
+                          <textarea class="form-control" placeholder="Replay"></textarea>
+                          
+                      </div><!-- /.white-box-->
+                      
+                   
+                      <div class="white-box">
+                          <div class="post-header">
+                          <div class="post-author-media">
+                              <img src="assets/images/profile-picture.png"  alt="">
+                          </div>
+                          
+                          <div class="post-author">
+                            <h4>Jonathan Doe</h4>
+                            <p>2 hours ago</p>
+                          </div>
+                          </div> <!-- /.post-header-->
+                          
+                          <div class="post-desc">
+                              <p>Lorem ipsum dolor sit amet, in per dicit graecis evertitur, sed ex labitur virtute neglegentur, quod zril decore ei qui. Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
+                          </div>
+                          
+                          <div class="comment-info">
+                              <ul>
+                                <li> <a href="#"><i class="fa fa-thumbs-up"></i> Like (4)</a></li>
+                                <li> <a href="#"><i class="fa fa-comment"></i> Comment (8)</a></li>
+                                <li> <a href="#"><i class="fa fa-comment"></i> Share (12)</a></li>
+                              </ul>
+                          </div>
+                         
+                         
+                         <div class="timeline-comment">
+                             <img src="assets/images/profile-picture.png"  alt="">
+                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
+                             <div class="comment-text">
+                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
+                             </div>
+                         </div> <!--/.timeline-comment-->
+                         
+                          <textarea class="form-control" placeholder="Replay"></textarea>
+                          
+                      </div><!-- /.white-box-->
+                                            
+                  </div> <!--/.col-md-8-->
+                  
+                  
+                  <div class="col-md-4">
+                      <div class="white-box">
+                        <h2 class="header-title">Skills</h2>
+                            <p>HTML5</p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                </div>
+                            </div>
+                            <p>CSS3</p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                </div>
+                            </div>
+                            <p>Bootstrap</p>
+                            <div class="progress progress-xs">
+                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                                </div>
+                            </div>
+                      </div> <!--/.white-box-->
+                      
+                      
+                      <div class="white-box">
+                        <h2 class="header-title">About</h2
+                        ><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae neque incidunt cumque, dolore eveniet porro asperiores itaque! Eligendi minus cupiditate molestiae praesentium, facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>
+                      </div> <!--/.white-box-->
+                      
+                      <div class="white-box">
+                        <h2 class="header-title">Team Members</h2>
+                       <div class="friend-list">
+                          <ul>
+                            <li> <a href="" >  <img src="assets/images/users/avatar-1.jpg"  alt="friend"/> </a> </li>
+                            <li> <a href="" >  <img src="assets/images/users/avatar-2.jpg"  alt="friend"/> </a> </li>
+                            <li> <a href="" >  <img src="assets/images/users/avatar-3.jpg"  alt="friend"/> </a> </li>
+                             <li> <a href="" >  <img src="assets/images/users/avatar-4.jpg"  alt="friend"/> </a> </li>
+                             <li> <a href="" >  <img src="assets/images/users/avatar-5.jpg"  alt="friend"/> </a> </li>
+                             <li> <a href="" >  <img src="assets/images/users/avatar-6.jpg"  alt="friend"/> </a> </li>
+                             <li> <a href="" >  <img src="assets/images/users/avatar-7.jpg"  alt="friend"/> </a> </li>
+                             <li> <a href="" >  <img src="assets/images/users/avatar-8.jpg"  alt="friend"/> </a> </li>
+                          </ul>
+                       </div>
+                      </div> <!--/.white-box-->
+                      
+                      
+                  </div> <!--/.col-md-4-->
+                  
+              </div>
+              <!--End row-->
+
+
+			    </div>
+        <!-- End Wrapper-->
+        <!--Start  Footer -->
+        <div th:replace="footer :: footerBar"></div>
+         <!--End footer -->
+       </div>
+      <!--End main content -->
+
+    <!--Begin core plugin -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/moment/moment.js"></script>
+    <script  src="/assets/js/jquery.slimscroll.js "></script>
+    <script src="/assets/js/jquery.nicescroll.js"></script>
+    <script src="/assets/js/functions.js"></script>
+    <!-- End core plugin -->
+
+
+
+</body>
+
+</html>

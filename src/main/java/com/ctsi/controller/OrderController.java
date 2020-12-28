@@ -2,6 +2,7 @@ package com.ctsi.controller;
 
 import com.ctsi.entity.TbOrder;
 import com.ctsi.service.TbOrderService;
+import com.ctsi.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +37,23 @@ public class OrderController {
     }
 
     //根据用户id查询订单详情
-    @RequestMapping("/order/detail/user/{userId}")
+    @RequestMapping("/order/user/detail/{userId}")
     public String getOrderDetailByUserId() {
 
-        return null;
+        return "user/user-order-detail";
     }
+
+    //查询用户订单
+    @RequestMapping("/order/user/list")
+    public String orderListForUser(HttpServletRequest request,TbOrder qbcOrder,Integer page) {
+        //设置查询的用户id
+        qbcOrder.setUserId(userRestController.getCurrentUser(request).getId());
+        PageResult<TbOrder> pageResult = orderService.orderListForUserByPage(qbcOrder, page);
+        request.setAttribute("pageResult",pageResult);
+        return "user/user-order-list";
+    }
+
+
 
 
 }
