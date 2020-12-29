@@ -15,26 +15,14 @@
             <!--Sidebar nav-->
             <ul class="nav nav-pills nav-stacked custom-nav">
 
-                <li th:if="${session.sessionroleadmin eq 1 || session.sessionroleprovider eq 1}" th:class="${activeUrl=='activemanage'?'menu-list nav-active':'menu-list'}"><a href="#"><i class="icon-layers"></i> <span>Activity Management</span></a>
+                <li th:class="${activeUrl=='activemanage'?'menu-list nav-active':'menu-list'}">
+                    <a href="#"><i class="icon-layers"></i>
+                     <span>用户订单管理</span></a>
                     <ul class="sub-menu-list">
-                        <li><a th:href="@{/active/pageList}">Activity List</a></li>
+                        <li><a th:href="@{/order/user/list}">我的所有订单</a></li>
                         <li><a th:href="@{/active/toAdd}"> Activity Add</a></li>
                     </ul>
                 </li>
-
-                <li th:if="${session.sessionroledonate eq 1}" th:class="${activeUrl=='donatemanage'?'menu-list nav-active':'menu-list'}"><a href="#"><i class="icon-layers"></i> <span>Donate Management</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/active/donateList}">Donate List</a></li>
-                    </ul>
-                </li>
-
-                <li th:if="${session.sessionroleadmin eq 1}" class="menu-list" th:class="${activeUrl=='usermanager'?'menu-list nav-active':'menu-list'}">
-                    <a href="#"><i class="icon-layers"></i> <span>Users Management</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/manage/user/list}">Users List</a></li>
-                    </ul>
-                </li>
-
 
             </ul>
             <!--End sidebar nav-->
