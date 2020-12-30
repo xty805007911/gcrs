@@ -46,7 +46,14 @@ public class TestController {
     public Object test3() throws IOException {
 
 
-        return "tmp";
+        return "test-index";
+    }
+
+    //验证ca证书
+    @GetMapping("/.well-known/pki-validation/fileauth.txt")
+    @ResponseBody
+    public String test4() {
+        return "2020122900000016gq1tn8urxcje2xcexf5yc54hhy7zbjpi60r8v7ccbgujo4c8";
     }
 
 
