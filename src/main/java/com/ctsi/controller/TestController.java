@@ -52,7 +52,7 @@ public class TestController {
     //验证ca证书
     @GetMapping("/.well-known/pki-validation/fileauth.txt")
     @ResponseBody
-    public String test4() {
+    public String testCa() {
         return "2020122900000016gq1tn8urxcje2xcexf5yc54hhy7zbjpi60r8v7ccbgujo4c8";
     }
 

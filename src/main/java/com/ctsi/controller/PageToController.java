@@ -1,6 +1,7 @@
 package com.ctsi.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,13 @@ public class PageToController {
     @RequestMapping("/user/index")
     public String userMapIndex(HttpServletRequest request,@RequestParam(required = false) Integer login) {
         return "user/user-index";
+    }
+
+    //用户订单详情
+    @RequestMapping("/user/order/detail/{orderId}")
+    public String userOrderDetail(HttpServletRequest request,@PathVariable Integer orderId) {
+        request.setAttribute("orderId",orderId);
+        return "user/user-order-detail";
     }
 
     //派单员地图展示

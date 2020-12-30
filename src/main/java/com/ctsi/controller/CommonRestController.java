@@ -1,5 +1,6 @@
 package com.ctsi.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ctsi.entity.TbOrder;
 import com.ctsi.rpc.BaiduRpc;
 import com.ctsi.util.PageResult;
@@ -21,6 +22,22 @@ public class CommonRestController {
     @GetMapping("/api/address/detail")
     public HashMap getAddressByIp(String ip) {
         return BaiduRpc.getAddressByIp(ip);
+    }
+
+    //根据经纬度获取地址详情
+    @GetMapping("/api/address/detail/xy")
+    public String getAddressByXY(Float x,Float y) {
+        HashMap result = BaiduRpc.getAddressByXY(x, y);
+        JSONObject jsonObj = (JSONObject) result.get("result");
+        String formattedAddress = (String) jsonObj.get("formatted_address");
+        String business = (String) jsonObj.get("business");
+        if(formattedAddress == null) {
+            formattedAddress = "";
+        }
+        if(business == null) {
+            business = null;
+        }
+        return formattedAddress.toString().concat(" ").concat(business);
     }
 
     //查询所有的订单

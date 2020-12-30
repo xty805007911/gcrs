@@ -7,6 +7,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
     <title>订单列表</title>
 
@@ -87,7 +88,9 @@
                                             <span class="label label-success">[[${item.status}]]已完成</span>
                                             <span class="label label-danger">[[${item.status}]]已取消</span>
                                         </td>
-                                        <td>crud</td>
+                                        <td>
+                                            <a th:href="@{/user/order/detail/}+${item.id}">详情</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -120,8 +123,6 @@
     <script src="/assets/js/jquery.nicescroll.js"></script>
     <script src="/assets/js/functions.js"></script>
     <!-- End core plugin -->
-
-
 
 </body>
 

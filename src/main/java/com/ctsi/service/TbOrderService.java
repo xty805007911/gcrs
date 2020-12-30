@@ -38,10 +38,10 @@ public class TbOrderService {
         tbOrderMapper.insert(tbOrder);
     }
 
-    //根据用户id查询订单详情
-    public TbOrder getOrderByUserId(Integer userId) {
-
-        return null;
+    // 根据id查询订单
+    public TbOrder getOrderById(Integer orderId) {
+        TbOrder tbOrder = tbOrderMapper.selectById(orderId);
+        return tbOrder;
     }
 
     //根据条件分页查询，查询用户的订单
@@ -62,6 +62,7 @@ public class TbOrderService {
         PageResult<TbOrder> pageResult = new PageResult<>(pageInfo);
         return pageResult;
     }
+
 
 
 }

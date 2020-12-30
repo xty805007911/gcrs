@@ -2,21 +2,26 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-  <title>模板页面</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <title>模板页面</title>
 
     <!--Begin  Page Level  CSS -->
-    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
-     <!--End  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <!--End  Page Level  CSS -->
     <link href="/assets/css/icons.css" rel="stylesheet">
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/responsive.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.13.1/index.js"></script>
+    <script src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=DvwyNimy8CXKEZG9Lxeo6G7zxBjxnsz8"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,211 +35,230 @@
 <body class="sticky-header">
 
 
-<!--引入左侧菜单栏-->
-<div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+    <!--引入左侧菜单栏-->
+    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
 
     <!-- main content start-->
-<div class="main-content" >
-<div th:replace="header :: headerBar"></div>
+    <div class="main-content" id="app">
+        <div th:replace="header :: headerBar"></div>
         <!--body wrapper start-->
         <div class="wrapper">
-          <!--Start Page Title-->
-           <div class="page-title-box">
-                <h4 class="page-title">活动</h4>
+            <!--Start Page Title-->
+            <div class="page-title-box">
+                <h4 class="page-title">订单详情</h4><input type="hidden" id="orderId" th:value="${orderId}">
                 <ol class="breadcrumb">
                     <li>
-                        <a href="#">活动</a>
+                        <a href="#"></a>
                     </li>
 
                     <li class="active">
-                        活动
+
                     </li>
                 </ol>
                 <div class="clearfix"></div>
-             </div>
-              <!--End Page Title-->
+            </div>
+            <!--End Page Title-->
 
 
-              <!--Start row-->
-              <div class="row">
-                  <div class="col-md-8">
+            <!--Start row-->
+            <div class="row">
+                <div class="col-md-8">
+
+
+                    <div class="white-box">
+                        <div class="post-header">
+                            <div>
+                                <h4>订单号：{{ order.orderCode }}<br />
+                                    状态：正在配送
+                                </h4>
+                            </div>
+                        </div> <!-- /.post-header-->
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">详细地址</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" value="" type="text" name="address" readonly>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="comment-info"></div>
+                        <!--分割线-->
+
+                        <div class="timeline-comment">
+                            <div id="usermap" style="height: 500px;">
+
+                            </div>
+                        </div>
+                        <!--/.timeline-comment-->
+
+                    </div><!-- /.white-box-->
+
                     <div class="white-box">
                         <form>
-                           <div class="form-group">
-                               <textarea rows="2" class="form-control" placeholder="Post a new message"></textarea>
-                           </div>
-                           
-                           <input type="submit" value="Post" class="btn btn-primary pull-right">
-                           
-                            <ul class="nav nav-pills m-t-20 post-list">
-                                <li>
-                                    <a href="#"><i class="fa fa-user"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-location-arrow"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class=" fa fa-camera"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-smile-o"></i></a>
-                                </li>
-                            </ul>
-                           
+                            <div class="form-group">
+                                <textarea rows="2" class="form-control" placeholder="评价一下此次订单吧~"></textarea>
+                            </div>
+
+                            <input type="submit" value="发布" class="btn btn-primary pull-right">
+
                         </form>
-                    </div> <!--/.hite-box-->
-                                      
-                      <div class="white-box">
-                          <div class="post-header">
-                          <div class="post-author-media">
-                              <img src="assets/images/profile-picture.png"  alt="">
-                          </div>
-                          
-                          <div class="post-author">
-                            <h4>Jonathan Doe</h4>
-                            <p>2 hours ago</p>
-                          </div>
-                          </div> <!-- /.post-header-->
-                          
-                          <div class="post-desc">
-                              <p>Lorem ipsum dolor sit amet, in per dicit graecis evertitur, sed ex labitur virtute neglegentur, quod zril decore ei qui. Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
-                          </div>
-                          
-                          <div class="comment-info">
-                              <ul>
-                                <li> <a href="#"><i class="fa fa-thumbs-up"></i> Like (4)</a></li>
-                                <li> <a href="#"><i class="fa fa-comment"></i> Comment (8)</a></li>
-                                <li> <a href="#"><i class="fa fa-comment"></i> Share (12)</a></li>
-                              </ul>
-                          </div>
-                         
-                         
-                         <div class="timeline-comment">
-                             <img src="assets/images/profile-picture.png"  alt="">
-                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
-                             <div class="comment-text">
-                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
-                             </div>
-                         </div> <!--/.timeline-comment-->
-                         
-                         <div class="timeline-comment">
-                             <img src="assets/images/profile-picture.png"  alt="">
-                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
-                             <div class="comment-text">
-                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
-                             </div>
-                         </div> <!--/.timeline-comment-->
-                         
-                          <textarea class="form-control" placeholder="Replay"></textarea>
-                          
-                      </div><!-- /.white-box-->
-                      
-                   
-                      <div class="white-box">
-                          <div class="post-header">
-                          <div class="post-author-media">
-                              <img src="assets/images/profile-picture.png"  alt="">
-                          </div>
-                          
-                          <div class="post-author">
-                            <h4>Jonathan Doe</h4>
-                            <p>2 hours ago</p>
-                          </div>
-                          </div> <!-- /.post-header-->
-                          
-                          <div class="post-desc">
-                              <p>Lorem ipsum dolor sit amet, in per dicit graecis evertitur, sed ex labitur virtute neglegentur, quod zril decore ei qui. Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
-                          </div>
-                          
-                          <div class="comment-info">
-                              <ul>
-                                <li> <a href="#"><i class="fa fa-thumbs-up"></i> Like (4)</a></li>
-                                <li> <a href="#"><i class="fa fa-comment"></i> Comment (8)</a></li>
-                                <li> <a href="#"><i class="fa fa-comment"></i> Share (12)</a></li>
-                              </ul>
-                          </div>
-                         
-                         
-                         <div class="timeline-comment">
-                             <img src="assets/images/profile-picture.png"  alt="">
-                             <span>Jonathan Doe <small class="text-light">2 hours ago</small></span>
-                             <div class="comment-text">
-                                 <p> Epicurei intellegat nec ei. Sed id doctus insolens pericula, sea suas nostrud accusamus.</p>
-                             </div>
-                         </div> <!--/.timeline-comment-->
-                         
-                          <textarea class="form-control" placeholder="Replay"></textarea>
-                          
-                      </div><!-- /.white-box-->
-                                            
-                  </div> <!--/.col-md-8-->
-                  
-                  
-                  <div class="col-md-4">
-                      <div class="white-box">
+                    </div>
+                    <!--/.hite-box-->
+
+                </div>
+                <!--/.col-md-8-->
+
+
+                <div class="col-md-4">
+                    <div class="white-box">
                         <h2 class="header-title">Skills</h2>
-                            <p>HTML5</p>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                </div>
+                        <p>HTML5</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 60%">
                             </div>
-                            <p>CSS3</p>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                </div>
+                        </div>
+                        <p>CSS3</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 80%">
                             </div>
-                            <p>Bootstrap</p>
-                            <div class="progress progress-xs">
-                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                </div>
+                        </div>
+                        <p>Bootstrap</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="90"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 90%">
                             </div>
-                      </div> <!--/.white-box-->
-                      
-                      
-                      <div class="white-box">
-                        <h2 class="header-title">About</h2
-                        ><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae neque incidunt cumque, dolore eveniet porro asperiores itaque! Eligendi minus cupiditate molestiae praesentium, facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>
-                      </div> <!--/.white-box-->
-                      
-                      <div class="white-box">
-                        <h2 class="header-title">Team Members</h2>
-                       <div class="friend-list">
-                          <ul>
-                            <li> <a href="" >  <img src="assets/images/users/avatar-1.jpg"  alt="friend"/> </a> </li>
-                            <li> <a href="" >  <img src="assets/images/users/avatar-2.jpg"  alt="friend"/> </a> </li>
-                            <li> <a href="" >  <img src="assets/images/users/avatar-3.jpg"  alt="friend"/> </a> </li>
-                             <li> <a href="" >  <img src="assets/images/users/avatar-4.jpg"  alt="friend"/> </a> </li>
-                             <li> <a href="" >  <img src="assets/images/users/avatar-5.jpg"  alt="friend"/> </a> </li>
-                             <li> <a href="" >  <img src="assets/images/users/avatar-6.jpg"  alt="friend"/> </a> </li>
-                             <li> <a href="" >  <img src="assets/images/users/avatar-7.jpg"  alt="friend"/> </a> </li>
-                             <li> <a href="" >  <img src="assets/images/users/avatar-8.jpg"  alt="friend"/> </a> </li>
-                          </ul>
-                       </div>
-                      </div> <!--/.white-box-->
-                      
-                      
-                  </div> <!--/.col-md-4-->
-                  
-              </div>
-              <!--End row-->
+                        </div>
+                    </div>
+                    <!--/.white-box-->
 
 
-			    </div>
+                    <div class="white-box">
+                        <h2 class="header-title">About</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae neque incidunt cumque,
+                            dolore eveniet porro asperiores itaque! Eligendi minus cupiditate molestiae praesentium,
+                            facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>
+                    </div>
+                    <!--/.white-box-->
+
+                </div>
+                <!--/.col-md-4-->
+
+            </div>
+            <!--End row-->
+
+
+        </div>
         <!-- End Wrapper-->
         <!--Start  Footer -->
         <div th:replace="footer :: footerBar"></div>
-         <!--End footer -->
-       </div>
-      <!--End main content -->
+        <!--End footer -->
+    </div>
+    <!--End main content -->
 
     <!--Begin core plugin -->
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/plugins/moment/moment.js"></script>
-    <script  src="/assets/js/jquery.slimscroll.js "></script>
+    <script src="/assets/js/jquery.slimscroll.js "></script>
     <script src="/assets/js/jquery.nicescroll.js"></script>
     <script src="/assets/js/functions.js"></script>
     <!-- End core plugin -->
+
+    <script>
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    orderId: null,
+                    order: {},
+                    initAddress: '',//取件地址
+                }
+
+            },
+            methods: {
+
+                init() {
+                    // 1.查询订单详情
+                    this.orderId = $('#orderId').val();
+                    axios.get("/api/order/detail/" + this.orderId).then(response => {
+                        this.order = response.data;
+                        //获取取件地址
+                        axios.get("/api/address/detail/xy?x=" + this.order.pointX + '&y=' + this.order.pointY).then(response => {
+                            this.initAddress = response.data;
+
+                            var map = new BMapGL.Map('usermap'); // 创建Map实例
+                            map.centerAndZoom(new BMapGL.Point(this.order.pointX, this.order.pointY), 12); // 初始化地图,设置中心点坐标和地图级别
+                            map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+                            // 创建城市选择控件
+                            var cityControl = new BMapGL.CityListControl({
+                                // 控件的停靠位置（可选，默认左上角）
+                                anchor: BMAP_ANCHOR_TOP_LEFT,
+                                // 控件基于停靠位置的偏移量（可选）
+                                offset: new BMapGL.Size(10, 5)
+                            });
+                            // 将控件添加到地图上
+                            map.addControl(cityControl);
+
+                            var point = new BMapGL.Point(this.order.pointX, this.order.pointY);//创建点标注
+                            var marker = new BMapGL.Marker(point);
+                            map.addOverlay(marker);
+                            //设置取货点窗口
+                            var opts = {
+                                width: 50,     // 信息窗口宽度
+                                height: 25,     // 信息窗口高度
+                                title: "取件地址", // 信息窗口标题
+                                message: "---"
+                            }
+
+
+                            var infoWindow = new BMapGL.InfoWindow("地址：" + this.initAddress, opts);  // 创建信息窗口对象 
+                            map.openInfoWindow(infoWindow, point); //开启信息窗口
+                            marker.addEventListener("click", function () {
+                                map.openInfoWindow(infoWindow, point); //开启信息窗口
+                            });
+                        });
+
+                    });//end init
+                },
+
+                // 定时刷新数据函数
+                dataRefreh() {
+                    // 计时器正在进行中，退出函数
+                    if (this.intervalId != null) {
+                        return;
+                    }
+                    // 计时器为空，操作
+                    this.intervalId = setInterval(() => {
+                        //console.log("刷新" + new Date());
+                        //this.init(); //加载数据函数
+                    }, 100000);
+                },
+                // 停止定时器
+                clear() {
+                    clearInterval(this.intervalId); //清除计时器
+                    this.intervalId = null; //设置为null
+                },
+            },
+            mounted() {
+                //this.getClientIP();
+                this.init();
+            },
+            created() {
+                this.dataRefreh();
+            },
+            destroyed() {
+                // 在页面销毁后，清除计时器
+                this.clear();
+            }
+        });
+    </script>
 
 
 
