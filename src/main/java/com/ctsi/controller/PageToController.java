@@ -49,4 +49,17 @@ public class PageToController {
         return "login";
     }
 
+    //去注册页面
+    @RequestMapping("/toRegister")
+    public String toRegister(HttpServletRequest request) {
+        request.setAttribute("msg","");
+        return "register";
+    }
+
+    //管理员 去系统管理/头像添加
+    @RequestMapping("/manage/system/user/avatar/toAdd")
+    public String toUserAvatarAdd() {
+        return "system-manage/avatar-add";
+    }
+
 }

@@ -36,39 +36,20 @@
 
 
     <!--引入左侧菜单栏-->
-    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+    <div th:replace="lefter :: lefterBar(activeUrl='userOrder')"></div>
 
     <!-- main content start-->
     <div class="main-content" id="app">
         <div th:replace="header :: headerBar"></div>
         <!--body wrapper start-->
         <div class="wrapper">
-            <!--Start Page Title-->
-            <div class="page-title-box">
-                <h4 class="page-title">订单详情</h4><input type="hidden" id="orderId" th:value="${orderId}">
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="#"></a>
-                    </li>
-
-                    <li class="active">
-
-                    </li>
-                </ol>
-                <div class="clearfix"></div>
-            </div>
-            <!--End Page Title-->
-
-
             <!--Start row-->
             <div class="row">
                 <div class="col-md-8">
-
-
                     <div class="white-box">
                         <div class="post-header">
                             <div>
-                                <h4>订单号：{{ order.orderCode }}<br />
+                                <h4>订单号：{{ order.orderCode }}<br /><input type="hidden" id="orderId" th:value="${orderId}">
                                     状态：正在配送
                                 </h4>
                             </div>

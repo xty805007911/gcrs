@@ -18,8 +18,9 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/css/style.css" rel="stylesheet">
     <link href="/assets/css/responsive.css" rel="stylesheet">
-    <script src="/assets/js/laydate.js"></script>
-    <link href="/assets/css/laydate.css" rel="stylesheet">
+    <!--laydate 只需保证目录结构一致，引入js即可单独使用-->
+    <script type="text/javascript" th:src="@{/layDate-v5.0.9/laydate/laydate.js}" charset="utf-8"></script>
+
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
 </head>
@@ -104,10 +105,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4 control-label">上门时间</label>
+                                        <label class="col-md-4 control-label">预计上门时间</label>
                                         <div class="col-md-8">
                                             <div class="layui-input-inline">
-                                                <input type="text" id="startTime">
+                                                <input type="text" id="endTime" name="endTime">
                                             </div>
                                         </div>
                                     </div>
@@ -374,12 +375,20 @@
 <!-- End core plugin -->
 
 <script>
+    laydate.render({
+        elem: '#endTime', 
+        theme: 'grid',
+        type: 'datetime',
+        trigger: 'click'
+    });
     //执行一个laydate实例
+    /*
     laydate.render({
         elem: '#startTime', //指定元素
         range: true,
         type: 'datetime'
     });
+    */
 </script>
 
 

@@ -3,6 +3,7 @@ package com.ctsi.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -19,7 +20,9 @@ public class TbOrder {
 	private String address;
 	private Float pointX;
 	private Float pointY;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date startTime;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date endTime;
 	private String receiverName;
 	private String receiverMobile;

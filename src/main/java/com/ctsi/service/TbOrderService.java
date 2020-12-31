@@ -30,7 +30,9 @@ public class TbOrderService {
         //为订单设置编号
         tbOrder.setOrderCode(UUIDUtil.generateShortUuid().toUpperCase());
         //订单生成时间
-        tbOrder.setCreateTime(new Date());
+        Date currentDate = new Date();
+        tbOrder.setCreateTime(currentDate);
+        tbOrder.setStartTime(currentDate);
         //订单初始化，未接单状态
         tbOrder.setStatus(Constant.ORDER_STATUS_NOT_SEND);
 

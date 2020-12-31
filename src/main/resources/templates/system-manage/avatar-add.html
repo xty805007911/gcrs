@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-    <title>订单列表</title>
+    <title>系统管理</title>
 
     <!--Begin  Page Level  CSS -->
     <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
@@ -32,7 +32,7 @@
 
 
     <!--引入左侧菜单栏-->
-    <div th:replace="lefter :: lefterBar(activeUrl='userOrder')"></div>
+    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
 
     <!-- main content start-->
     <div class="main-content">
@@ -41,14 +41,14 @@
         <div class="wrapper">
             <!--Start Page Title-->
             <div class="page-title-box">
-                <h4 class="page-title"></h4>
+                <h4 class="page-title">系统管理</h4>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="#"></a>
+                        <a href="#">系统管理</a>
                     </li>
 
                     <li class="active">
-
+                        系统管理
                     </li>
                 </ol>
                 <div class="clearfix"></div>
@@ -59,44 +59,43 @@
             <div class="row">
 
                 <!-- Start inbox widget-->
-                <div class="col-md-12">
+                <div class="col-md-9">
                     <div class="white-box">
-                        <h2 class="header-title"> Projects </h2>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>订单号</th>
-                                        <th>物品重量</th>
-                                        <th>创建时间</th>
-                                        <th>订单状态</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="item:${pageResult.list}">
-                                        <td>[[${itemStat.index+1}]]</td>
-                                        <td>[[${item.orderCode}]]</td>
-                                        <td>[[${item.kg}]]</td>
-                                        <td>
-                                            [[${#dates.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}]]
-                                        </td>
-                                        <td>
-                                            <span class="label label-primary">[[${item.status}]]等待接单</span>
-                                            <span class="label label-warning">[[${item.status}]]正在配送</span>
-                                            <span class="label label-success">[[${item.status}]]已完成</span>
-                                            <span class="label label-danger">[[${item.status}]]已取消</span>
-                                        </td>
-                                        <td>
-                                            <a th:href="@{/user/order/detail/}+${item.id}">详情</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <h2 class="header-title"> 用户头像添加 </h2>
+                        <form class="form-horizontal" method="POST" th:action="@{/manage/system/user/avatar/add}">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">URL</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" value="" type="text" name="url" id="url"><br />
+                                    <button type="submit" class="btn btn-success round" id="showImgBtn">显示图片</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display:none">
+                                <label class="col-md-2 control-label">URL</label>
+                                <div class="col-md-10">
+                                    <image src="" id="img"></image>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">名称</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" value="" type="text" name="name">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <button type="submit" class="btn btn-primary round" id="addButton"
+                                        onclick="return alert('提交成功')">提交</button>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
+
                 </div>
                 <!-- Start inbox widget-->
             </div>
@@ -123,6 +122,14 @@
     <script src="/assets/js/jquery.nicescroll.js"></script>
     <script src="/assets/js/functions.js"></script>
     <!-- End core plugin -->
+    <script>
+        $(document).ready(function () {
+            $("#showImgBtn").click(function () {
+                $("#url").val();
+                //$("#img").src=
+            });
+        });
+    </script>
 
 </body>
 
