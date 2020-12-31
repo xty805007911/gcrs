@@ -22,7 +22,7 @@ public class SystemManageController {
     private TbUserService userService;
 
     //用户头像列表
-    @RequestMapping("/manage/system/user/avatar")
+    @RequestMapping("/manage/system/user/avatarList")
     public String userAvatarPageList(Integer page, HttpServletRequest request) {
         PageResult<TbAvatar> pageResult = userService.avatarPageList(page, Constant.PAGE_SIZE);
         request.setAttribute("pageResult",pageResult);
@@ -31,8 +31,8 @@ public class SystemManageController {
 
     //用户头像添加
     @RequestMapping("/manage/system/user/avatar/add")
-    public String userAvatarAdd(TbAvatar avatar) {
+    public String userAvatarAdd(TbAvatar avatar,HttpServletRequest request) {
         userService.saveAvatar(avatar);
-        return "redirect: /manage/system/user/avatar";
+        return "redirect:/manage/system/user/avatarList";
     }
 }

@@ -19,7 +19,7 @@ public class PageToController {
 
     //重定向的index页面
     @RequestMapping("/")
-    public String toInde() {
+    public String toIndex() {
         return "redirect:/user/index";
     }
 

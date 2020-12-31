@@ -32,7 +32,7 @@
 
 
     <!--引入左侧菜单栏-->
-    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+    <div th:replace="lefter :: lefterBar(activeUrl='systemManage')"></div>
 
     <!-- main content start-->
     <div class="main-content">
@@ -67,14 +67,13 @@
                                 <label class="col-md-2 control-label">URL</label>
                                 <div class="col-md-10">
                                     <input class="form-control" value="" type="text" name="url" id="url"><br />
-                                    <button type="submit" class="btn btn-success round" id="showImgBtn">显示图片</button>
                                 </div>
                             </div>
 
-                            <div class="form-group" style="display:none">
-                                <label class="col-md-2 control-label">URL</label>
+                            <div class="form-group" style="display:none" id="imgdiv">
+                                <label class="col-md-2 control-label">预览</label>
                                 <div class="col-md-10">
-                                    <image src="" id="img"></image>
+                                    <image src="" id="img" style="height:45px;width:45px" class="img-circle" alt="img"></image>
                                 </div>
                             </div>
 
@@ -88,8 +87,7 @@
                             <div class="form-group">
                                 <label class="col-md-2 control-label"></label>
                                 <div class="col-md-10">
-                                    <button type="submit" class="btn btn-primary round" id="addButton"
-                                        onclick="return alert('提交成功')">提交</button>
+                                    <button type="submit" class="btn btn-primary round" id="addButton" onclick="return alert('提交成功')">提交</button>
                                 </div>
                             </div>
                         </form>
@@ -124,9 +122,15 @@
     <!-- End core plugin -->
     <script>
         $(document).ready(function () {
-            $("#showImgBtn").click(function () {
-                $("#url").val();
-                //$("#img").src=
+            $("#url").keyup(function () {
+                var url = $("#url").val();
+                if (url == '') {
+                    $("#imgdiv").css('display', 'none')
+                }else {
+                    $("#imgdiv").css('display', 'block')
+                }
+
+                $("#img").attr('src',url);
             });
         });
     </script>

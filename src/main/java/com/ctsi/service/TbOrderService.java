@@ -65,6 +65,29 @@ public class TbOrderService {
         return pageResult;
     }
 
+    //根据状态查询所有订单
+    public PageResult<TbOrder> getOrderPageListByStatus(String status,Integer page,Integer size) {
+        if(page == null || page <= 0) {
+            page = 1;
+        }
+
+        PageHelper.startPage(page,size);
+        QueryWrapper<TbOrder> queryWrapper = new QueryWrapper<>();
+
+        //如果不是查询所有，则根据状态码查询
+        if(!status.equals("all")) {
+            queryWrapper.eq("status",status);
+        }
+
+        queryWrapper.orderByDesc("id");
+        List<TbOrder> orderList = tbOrderMapper.selectList(queryWrapper);
+
+        PageInfo<TbOrder> pageInfo = new PageInfo<>(orderList);
+        PageResult<TbOrder> pageResult = new PageResult<>(pageInfo);
+
+        return pageResult;
+    }
+
 
 
 }

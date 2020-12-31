@@ -141,108 +141,108 @@
     </div>
     <!--End main content -->
 
-    <!--Begin core plugin -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/plugins/moment/moment.js"></script>
-    <script src="/assets/js/jquery.slimscroll.js "></script>
-    <script src="/assets/js/jquery.nicescroll.js"></script>
-    <script src="/assets/js/functions.js"></script>
-    <!-- End core plugin -->
-
-    <script>
-
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    orderId: null,
-                    order: {},
-                    initAddress: '',//取件地址
-                }
-
-            },
-            methods: {
-
-                init() {
-                    // 1.查询订单详情
-                    this.orderId = $('#orderId').val();
-                    axios.get("/api/order/detail/" + this.orderId).then(response => {
-                        this.order = response.data;
-                        //获取取件地址
-                        axios.get("/api/address/detail/xy?x=" + this.order.pointX + '&y=' + this.order.pointY).then(response => {
-                            this.initAddress = response.data;
-
-                            var map = new BMapGL.Map('usermap'); // 创建Map实例
-                            map.centerAndZoom(new BMapGL.Point(this.order.pointX, this.order.pointY), 12); // 初始化地图,设置中心点坐标和地图级别
-                            map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
-
-                            // 创建城市选择控件
-                            var cityControl = new BMapGL.CityListControl({
-                                // 控件的停靠位置（可选，默认左上角）
-                                anchor: BMAP_ANCHOR_TOP_LEFT,
-                                // 控件基于停靠位置的偏移量（可选）
-                                offset: new BMapGL.Size(10, 5)
-                            });
-                            // 将控件添加到地图上
-                            map.addControl(cityControl);
-
-                            var point = new BMapGL.Point(this.order.pointX, this.order.pointY);//创建点标注
-                            var marker = new BMapGL.Marker(point);
-                            map.addOverlay(marker);
-                            //设置取货点窗口
-                            var opts = {
-                                width: 50,     // 信息窗口宽度
-                                height: 25,     // 信息窗口高度
-                                title: "取件地址", // 信息窗口标题
-                                message: "---"
-                            }
-
-
-                            var infoWindow = new BMapGL.InfoWindow("地址：" + this.initAddress, opts);  // 创建信息窗口对象 
-                            map.openInfoWindow(infoWindow, point); //开启信息窗口
-                            marker.addEventListener("click", function () {
-                                map.openInfoWindow(infoWindow, point); //开启信息窗口
-                            });
-                        });
-
-                    });//end init
-                },
-
-                // 定时刷新数据函数
-                dataRefreh() {
-                    // 计时器正在进行中，退出函数
-                    if (this.intervalId != null) {
-                        return;
-                    }
-                    // 计时器为空，操作
-                    this.intervalId = setInterval(() => {
-                        //console.log("刷新" + new Date());
-                        //this.init(); //加载数据函数
-                    }, 100000);
-                },
-                // 停止定时器
-                clear() {
-                    clearInterval(this.intervalId); //清除计时器
-                    this.intervalId = null; //设置为null
-                },
-            },
-            mounted() {
-                //this.getClientIP();
-                this.init();
-            },
-            created() {
-                this.dataRefreh();
-            },
-            destroyed() {
-                // 在页面销毁后，清除计时器
-                this.clear();
-            }
-        });
-    </script>
-
-
-
 </body>
+
+
+<script src="/assets/js/jquery.min.js"></script>
+<script>
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                orderId: null,
+                order: {},
+                initAddress: '',//取件地址
+            }
+
+        },
+        methods: {
+
+            init() {
+                // 1.查询订单详情
+                this.orderId = $('#orderId').val();
+                axios.get("/api/order/detail/" + this.orderId).then(response => {
+                    this.order = response.data;
+                    //获取取件地址
+                    axios.get("/api/address/detail/xy?x=" + this.order.pointX + '&y=' + this.order.pointY).then(response => {
+                        this.initAddress = response.data;
+
+                        var map = new BMapGL.Map('usermap'); // 创建Map实例
+                        map.centerAndZoom(new BMapGL.Point(this.order.pointX, this.order.pointY), 12); // 初始化地图,设置中心点坐标和地图级别
+                        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+                        // 创建城市选择控件
+                        var cityControl = new BMapGL.CityListControl({
+                            // 控件的停靠位置（可选，默认左上角）
+                            anchor: BMAP_ANCHOR_TOP_LEFT,
+                            // 控件基于停靠位置的偏移量（可选）
+                            offset: new BMapGL.Size(10, 5)
+                        });
+                        // 将控件添加到地图上
+                        map.addControl(cityControl);
+
+                        var point = new BMapGL.Point(this.order.pointX, this.order.pointY);//创建点标注
+                        var marker = new BMapGL.Marker(point);
+                        map.addOverlay(marker);
+                        //设置取货点窗口
+                        var opts = {
+                            width: 50,     // 信息窗口宽度
+                            height: 25,     // 信息窗口高度
+                            title: "取件地址", // 信息窗口标题
+                            message: "---"
+                        }
+
+
+                        var infoWindow = new BMapGL.InfoWindow("地址：" + this.initAddress, opts);  // 创建信息窗口对象 
+                        map.openInfoWindow(infoWindow, point); //开启信息窗口
+                        marker.addEventListener("click", function () {
+                            map.openInfoWindow(infoWindow, point); //开启信息窗口
+                        });
+                    });
+
+                });//end init
+            },
+
+            // 定时刷新数据函数
+            dataRefreh() {
+                // 计时器正在进行中，退出函数
+                if (this.intervalId != null) {
+                    return;
+                }
+                // 计时器为空，操作
+                this.intervalId = setInterval(() => {
+                    //console.log("刷新" + new Date());
+                    //this.init(); //加载数据函数
+                }, 100000);
+            },
+            // 停止定时器
+            clear() {
+                clearInterval(this.intervalId); //清除计时器
+                this.intervalId = null; //设置为null
+            },
+        },
+        mounted() {
+            //this.getClientIP();
+            this.init();
+        },
+        created() {
+            this.dataRefreh();
+        },
+        destroyed() {
+            // 在页面销毁后，清除计时器
+            this.clear();
+        }
+    });
+</script>
+<!--Begin core plugin -->
+
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/plugins/moment/moment.js"></script>
+<script src="/assets/js/jquery.slimscroll.js "></script>
+<script src="/assets/js/jquery.nicescroll.js"></script>
+<script src="/assets/js/functions.js"></script>
+<!-- End core plugin -->
+
 
 </html>
