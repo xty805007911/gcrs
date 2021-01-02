@@ -19,4 +19,5 @@ public class TbOrderSend {
     private Float pointY;
     private Date sendStartTime;
     private Date sendEndTime;
+    private String sendAddress;
 }

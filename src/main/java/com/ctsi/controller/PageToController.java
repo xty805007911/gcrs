@@ -1,5 +1,6 @@
 package com.ctsi.controller;
 
+import com.ctsi.entity.TbOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,9 @@ public class PageToController {
 
     //用户首页地图展示
     @RequestMapping("/user/index")
-    public String userMapIndex(HttpServletRequest request,@RequestParam(required = false) Integer login) {
+    public String userMapIndex(HttpServletRequest request) {
+        request.setAttribute("order",new TbOrder());
+        request.setAttribute("msg","");
         return "user/user-index";
     }
 

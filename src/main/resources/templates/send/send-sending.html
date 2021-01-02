@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-    <title>用户地图首页</title>
+    <title>接单员路线规划</title>
 
     <!--Begin  Page Level  CSS -->
     <link href="/assets/plugins/morris-chart/morris.css" rel="stylesheet">
@@ -231,49 +231,8 @@
                                         map.openInfoWindow(infoWindow, r.point); //开启信息窗口
                                     });
 
-                                    //画中心圆形
-                                    var circle = new BMapGL.Circle(r.point, 8000, { strokeColor: "blue", strokeWeight: 1, strokeOpacity: 0.2 }); //创建圆
-                                    map.addOverlay(circle);
-
-                                    //画出附近的发起单
-                                    axios.get("/api/order/pageList/status/NOT_SEND").then(response => {
-
-                                        this.notSendList = response.data.list;
-                                        //将订单画在地图上
-                                        var orderPointList = [];
-                                        var orderMarkerList = [];
-                                        for (let i = 0; i < this.notSendList.length; i++) {
-                                            var x1 = this.notSendList[i].pointX;
-                                            var y1 = this.notSendList[i].pointY;
-                                            var point1 = new BMapGL.Point(x1, y1);//创建点标注
-                                            orderMarkerList[i] = new BMapGL.Marker(point1);
-                                            map.addOverlay(orderMarkerList[i]);
-                                            //console.log("1:"+x1+","+y1);
-                                            orderMarkerList[i].orderId = this.notSendList[i].id;
-
-                                            orderMarkerList[i].addEventListener('click', e => {
-                                                //查询当前订单
-                                                axios.get("/api/order/detail/" + this.notSendList[i].id).then(response => {
-                                                    this.clickOrderDetail = response.data;
-                                                    let address = '';
-                                                    //获取点击当前订单的地理位置
-                                                    axios.get("/api/address/detail/xy?x=" + this.clickOrderDetail.pointX + '&y=' + this.clickOrderDetail.pointY).then(response => {
-                                                        address = response.data;
-                                                        $('#address1').val(address);
-                                                    });
-                                                    $('#address2').val(this.clickOrderDetail.address);
-
-                                                    $('#kg').val(this.clickOrderDetail.kg);
-                                                    $('#reciver').val(this.clickOrderDetail.receiverName);
-                                                    $('#mobile').val(this.clickOrderDetail.receiverMobile);
-                                                    $('#endTime').val(this.clickOrderDetail.endTime);
-                                                    $('#orderId').val(this.clickOrderDetail.id);//订单id
-                                                   
-                                                });
-                                            });
-                                            //console.log("3:"+x1+","+y1);
-                                        }
-                                    })
+                                   
+                             
                                 });
                             } else {
                                 //alert('failed' + this.getStatus());

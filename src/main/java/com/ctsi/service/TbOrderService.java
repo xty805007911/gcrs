@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ctsi.config.Constant;
 import com.ctsi.controller.UserRestController;
 import com.ctsi.entity.TbOrder;
+import com.ctsi.entity.TbOrderSend;
 import com.ctsi.mapper.TbOrderMapper;
+import com.ctsi.mapper.TbOrderSendMapper;
+import com.ctsi.mapper.TbUserMapper;
 import com.ctsi.util.PageResult;
 import com.ctsi.util.UUIDUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +26,10 @@ public class TbOrderService {
     private TbOrderMapper tbOrderMapper;
     @Autowired
     private UserRestController userRestController;
+    @Autowired
+    private TbOrderSendMapper orderSendMapper;
+    @Autowired
+    private TbUserMapper userMapper;
 
 
     //添加一个新订单
@@ -33,6 +41,9 @@ public class TbOrderService {
         Date currentDate = new Date();
         tbOrder.setCreateTime(currentDate);
         tbOrder.setStartTime(currentDate);
+        if(tbOrder.getEndTime() == null) {
+            tbOrder.setEndTime(currentDate);
+        }
         //订单初始化，未接单状态
         tbOrder.setStatus(Constant.ORDER_STATUS_NOT_SEND);
 
@@ -40,9 +51,28 @@ public class TbOrderService {
         tbOrderMapper.insert(tbOrder);
     }
 
+    //接单员添加订单
+    @Transactional
+    public void addSendOrder(TbOrder order,Integer currentUserId,Float pointX,Float pointY) {
+        order.setStatus(Constant.ORDER_STATUS_SENDING);//修改为正在配送的状态
+        tbOrderMapper.updateById(order);
+
+        //添加接单信息
+        TbOrderSend orderSend = new TbOrderSend();
+        orderSend.setId(order.getId());//orderSend的id就是order的id
+        orderSend.setSendStartTime(new Date());
+        orderSend.setSendId(currentUserId);
+        orderSend.setPointX(pointX);
+        orderSend.setPointY(pointY);
+        orderSend.setSendRealname(userMapper.selectById(currentUserId).getRealname());
+        orderSendMapper.insert(orderSend);
+
+    }
+
     // 根据id查询订单
     public TbOrder getOrderById(Integer orderId) {
         TbOrder tbOrder = tbOrderMapper.selectById(orderId);
+        //查询下单者
         return tbOrder;
     }
 

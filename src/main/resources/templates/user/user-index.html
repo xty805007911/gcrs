@@ -92,13 +92,13 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">收件人</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" value="" type="text" name="receiverName">
+                                            <input class="form-control" th:value="${order.receiverName}" type="text" name="receiverName">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">联系方式</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" value="" type="text" name="receiverMobile">
+                                            <input class="form-control" th:value="${order.receiverMobile}" type="text" name="receiverMobile">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -110,13 +110,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-8 control-label"></label>
+                                        <label class="col-md-8 control-label" style="color:red">
+                                            [[${msg}]]
+                                        </label>
                                         <div class="col-md-4">
                                             <button type="submit" class="btn btn-primary round" id="addButton"
                                                 th:if="${session.sessionUser!=null}"
-                                                onclick="return alert('提交成功')">提交</button>
+                                                onclick="return confirm('确定提交？')">提交</button>
                                         </div>
                                     </div>
+
+                                    
                                 </form>
                             </div>
                         </div>
