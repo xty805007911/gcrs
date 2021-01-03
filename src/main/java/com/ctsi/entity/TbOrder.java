@@ -32,5 +32,12 @@ public class TbOrder {
 	//额外属性
 	@TableField(exist = false)
 	private TbUser receiverUser;
+	@TableField(exist = false)
+	private TbOrderSend orderSend;
+	@TableField(exist = false)
+	private TbUser user;
+	@TableField(exist = false)
+	private TbUser send;
+
 
 }

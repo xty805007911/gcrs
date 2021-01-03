@@ -5,6 +5,7 @@ import com.ctsi.config.Constant;
 import com.ctsi.controller.UserRestController;
 import com.ctsi.entity.TbOrder;
 import com.ctsi.entity.TbOrderSend;
+import com.ctsi.entity.TbUser;
 import com.ctsi.mapper.TbOrderMapper;
 import com.ctsi.mapper.TbOrderSendMapper;
 import com.ctsi.mapper.TbUserMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,15 +67,45 @@ public class TbOrderService {
         orderSend.setPointX(pointX);
         orderSend.setPointY(pointY);
         orderSend.setSendRealname(userMapper.selectById(currentUserId).getRealname());
+        orderSend.setStatus(Constant.ORDER_STATUS_NOT_SEND);
         orderSendMapper.insert(orderSend);
 
     }
 
     // 根据id查询订单
     public TbOrder getOrderById(Integer orderId) {
-        TbOrder tbOrder = tbOrderMapper.selectById(orderId);
-        //查询下单者
-        return tbOrder;
+        TbOrder order = tbOrderMapper.selectById(orderId);
+        TbOrderSend orderSend = orderSendMapper.selectById(orderId);
+        TbUser user = userMapper.selectById(order.getUserId());
+        if(orderSend!=null) {
+            TbUser send = userMapper.selectById(orderSend.getSendId());
+            order.setSend(send);
+        }
+        order.setUser(user);
+        order.setOrderSend(orderSend);
+        return order;
+    }
+
+    //修改订单状态
+    @Transactional
+    public void updateOrderStatus(Integer orderId,String status) {
+        TbOrder order = tbOrderMapper.selectById(orderId);
+        TbOrderSend orderSend = orderSendMapper.selectById(orderId);
+        order.setStatus(status);
+        orderSend.setStatus(status);
+        tbOrderMapper.updateById(order);
+        orderSendMapper.updateById(orderSend);
+    }
+
+    //获取用户当前订单
+    public TbOrder getUserCurrentOrder(Integer userId) {
+        QueryWrapper<TbOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("status",Constant.ORDER_STATUS_NOT_SEND);
+        queryWrapper.or();
+        queryWrapper.eq("status",Constant.ORDER_STATUS_SENDING);
+        queryWrapper.orderByDesc("id");
+        return tbOrderMapper.selectOne(queryWrapper);
     }
 
     //根据条件分页查询，查询用户的订单
@@ -116,6 +148,65 @@ public class TbOrderService {
         PageResult<TbOrder> pageResult = new PageResult<>(pageInfo);
 
         return pageResult;
+    }
+
+    //获取派送员所有订单
+    public PageResult<TbOrder> getSendOrderList(Integer sendId,Integer page,Integer size,String status) {
+        if(page == null || page <= 0) {
+            page = 1;
+        }
+        QueryWrapper<TbOrderSend> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("send_id",sendId);
+
+        if(status!=null&&!status.equals("")) {
+            queryWrapper.eq("status",Constant.ORDER_STATUS_NOT_SEND);
+        }
+
+        queryWrapper.orderByDesc("id");
+
+        PageHelper.startPage(page,size);
+
+        List<TbOrderSend> orderSendList = orderSendMapper.selectList(queryWrapper);//查询
+        List<TbOrder> orderList = new ArrayList<>();
+        for(TbOrderSend orderSend : orderSendList) {
+            TbOrder order = tbOrderMapper.selectById(orderSend.getId());
+            order.setOrderSend(orderSend);
+            orderList.add(order);
+        }
+
+        PageInfo<TbOrder> pageInfo = new PageInfo<>(orderList);
+        PageResult<TbOrder> pageResult = new PageResult<>(pageInfo);
+
+        return pageResult;
+
+    }
+
+    //获取用户是的未接收订单
+    public TbOrder getUserNotSendOrder(Integer userId) {
+        QueryWrapper<TbOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        List<TbOrder> orderList = tbOrderMapper.selectList(queryWrapper);
+        TbOrder res = null;
+        for(TbOrder order : orderList) {
+            if(Constant.ORDER_STATUS_NOT_SEND.equals(order.getStatus())) {
+                res = order;
+            }
+        }
+        return res;
+    }
+
+    //获取用户是的正在配送订单
+    public TbOrder getUserNotSending(Integer userId) {
+        QueryWrapper<TbOrder> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        List<TbOrder> orderList = tbOrderMapper.selectList(queryWrapper);
+        TbOrder res = null;
+        for(TbOrder order : orderList) {
+            if(Constant.ORDER_STATUS_SENDING.equals(order.getStatus())) {
+                res = order;
+            }
+        }
+        return res;
     }
 
 

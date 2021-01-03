@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <title>订单列表</title>
+
+    <!--Begin  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <!--End  Page Level  CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="js/html5shiv.min.js"></script>
+          <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="sticky-header">
+
+
+    <!--引入左侧菜单栏-->
+    <div th:replace="lefter :: lefterBar(activeUrl='send')"></div>
+
+    <!-- main content start-->
+    <div class="main-content">
+        <div th:replace="header :: headerBar"></div>
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <!--Start Page Title-->
+            <div class="page-title-box">
+                <h4 class="page-title"></h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"></a>
+                    </li>
+
+                    <li class="active">
+
+                    </li>
+                </ol>
+                <div class="clearfix"></div>
+            </div>
+            <!--End Page Title-->
+
+            <!--Start row-->
+            <div class="row">
+
+                <!-- Start inbox widget-->
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <h2 class="header-title"> 订单 </h2>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>订单号</th>
+                                        <th>物品重量</th>
+                                        <th>创建时间</th>
+                                        <th>订单状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item:${pageResult.list}">
+                                        <td>[[${itemStat.index+1}]]</td>
+                                        <td>[[${item.orderCode}]]</td>
+                                        <td>[[${item.kg}]]</td>
+                                        <td>
+                                            [[${#dates.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}]]
+                                        </td>
+                                        <td>
+                                            <span class="label label-primary" th:if="${item.status eq 'NOT_SEND'}">等待接单</span>
+                                            <span class="label label-warning" th:if="${item.status eq 'SENDING'}">正在配送</span>
+                                            <span class="label label-success" th:if="${item.status eq 'SUCCESS'}">已完成</span>
+                                            <span class="label label-danger" th:if="${item.status eq 'CANCELED'}">已取消</span>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-primary round" th:href="@{/user/order/detail/}+${item.id}">详情</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <nav aria-label="Page navigation" style="text-align: center">
+                                <ul class="pagination">
+                                    <li>
+                                        <a th:href="@{/order/user/list?page=}+${pageResult.page-1>0?pageResult.page-1:1}"
+                                            aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <li th:each="i:${#numbers.sequence(1,pageResult.pageSize)}">
+                                        <a th:href="@{/order/user/list?page=}+${i}">[[${i}]]</a>
+                                    </li>
+
+                                    <li>
+                                        <a th:href="@{/order/user/list?page=}+${pageResult.page+1>pageResult.pageSize?pageResult.pageSize:pageResult.page+1}"
+                                            aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Start inbox widget-->
+            </div>
+            <!--End row-->
+
+        </div>
+        <!-- End Wrapper-->
+
+
+        <!--Start  Footer -->
+        <div th:replace="footer :: footerBar"></div>
+        <!--End footer -->
+
+    </div>
+    <!--End main content -->
+
+
+
+    <!--Begin core plugin -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/moment/moment.js"></script>
+    <script src="/assets/js/jquery.slimscroll.js "></script>
+    <script src="/assets/js/jquery.nicescroll.js"></script>
+    <script src="/assets/js/functions.js"></script>
+    <!-- End core plugin -->
+
+</body>
+
+</html>

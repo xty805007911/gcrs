@@ -20,4 +20,5 @@ public class TbOrderSend {
     private Date sendStartTime;
     private Date sendEndTime;
     private String sendAddress;
+    private String status;
 }

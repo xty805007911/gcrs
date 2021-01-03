@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <title>订单详情111</title>
+
+    <!--Begin  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <!--End  Page Level  CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.13.1/index.js"></script>
+    <script src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=DvwyNimy8CXKEZG9Lxeo6G7zxBjxnsz8"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="js/html5shiv.min.js"></script>
+          <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="sticky-header">
+
+
+    <!--引入左侧菜单栏-->
+    <div th:replace="lefter :: lefterBar(activeUrl='userOrder')"></div>
+
+    <!-- main content start-->
+    <div class="main-content" id="app">
+        <div th:replace="header :: headerBar"></div>
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <!--Start row-->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="white-box">
+                        <div class="post-header">
+                            <div>
+                                <h4>订单号：{{ order.orderCode }}<br /><input type="hidden" id="orderId" th:value="${orderId}">
+                                    状态：正在配送
+                                </h4>
+                            </div>
+                        </div> <!-- /.post-header-->
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">详细地址</label>
+                                <div class="col-md-10">
+                                    <input class="form-control" value="" type="text" name="address" readonly>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="comment-info"></div>
+                        <!--分割线-->
+
+                        <div class="timeline-comment">
+                            <div id="usermap" style="height: 500px;">
+
+                            </div>
+                        </div>
+                        <!--/.timeline-comment-->
+
+                    </div><!-- /.white-box-->
+
+                    <div class="white-box">
+                        <form>
+                            <div class="form-group">
+                                <textarea rows="2" class="form-control" placeholder="评价一下此次订单吧~"></textarea>
+                            </div>
+
+                            <input type="submit" value="发布" class="btn btn-primary pull-right">
+
+                        </form>
+                    </div>
+                    <!--/.hite-box-->
+
+                </div>
+                <!--/.col-md-8-->
+
+
+                <div class="col-md-4">
+                    <div class="white-box">
+                        <h2 class="header-title">Skills</h2>
+                        <p>HTML5</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                            </div>
+                        </div>
+                        <p>CSS3</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                            </div>
+                        </div>
+                        <p>Bootstrap</p>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="90"
+                                aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.white-box-->
+
+
+                    <div class="white-box">
+                        <h2 class="header-title">About</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae neque incidunt cumque,
+                            dolore eveniet porro asperiores itaque! Eligendi minus cupiditate molestiae praesentium,
+                            facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>
+                    </div>
+                    <!--/.white-box-->
+
+                </div>
+                <!--/.col-md-4-->
+
+            </div>
+            <!--End row-->
+
+
+        </div>
+        <!-- End Wrapper-->
+        <!--Start  Footer -->
+        <div th:replace="footer :: footerBar"></div>
+        <!--End footer -->
+    </div>
+    <!--End main content -->
+
+</body>
+
+
+<script src="/assets/js/jquery.min.js"></script>
+<script>
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                orderId: null,
+                order: {},
+                initAddress: '',//取件地址
+            }
+
+        },
+        methods: {
+
+            init() {
+                // 1.查询订单详情
+                this.orderId = $('#orderId').val();
+                axios.get("/api/order/detail/" + this.orderId).then(response => {
+                    this.order = response.data;
+                    //获取起点地址
+                    axios.get("/api/address/detail/xy?x=" + this.order.pointX + '&y=' + this.order.pointY).then(response => {
+                        this.initAddress = response.data;
+
+                        var map = new BMapGL.Map('usermap'); // 创建Map实例
+                        map.centerAndZoom(new BMapGL.Point(this.order.pointX, this.order.pointY), 12); // 初始化地图,设置中心点坐标和地图级别
+                        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+                        // 创建城市选择控件
+                        var cityControl = new BMapGL.CityListControl({
+                            // 控件的停靠位置（可选，默认左上角）
+                            anchor: BMAP_ANCHOR_TOP_LEFT,
+                            // 控件基于停靠位置的偏移量（可选）
+                            offset: new BMapGL.Size(10, 5)
+                        });
+                        // 将控件添加到地图上
+                        map.addControl(cityControl);
+
+                        var point = new BMapGL.Point(this.order.pointX, this.order.pointY);//创建点标注
+                        var marker = new BMapGL.Marker(point);
+                        map.addOverlay(marker);
+                        //设置取货点窗口
+                        var opts = {
+                            width: 50,     // 信息窗口宽度
+                            height: 25,     // 信息窗口高度
+                            title: "取件地址", // 信息窗口标题
+                            message: "---"
+                        }
+
+
+                        var infoWindow = new BMapGL.InfoWindow("地址：" + this.initAddress, opts);  // 创建信息窗口对象 
+                        map.openInfoWindow(infoWindow, point); //开启信息窗口
+                        marker.addEventListener("click", function () {
+                            map.openInfoWindow(infoWindow, point); //开启信息窗口
+                        });
+                    });
+
+                });//end init
+            },
+
+            // 定时刷新数据函数
+            dataRefreh() {
+                // 计时器正在进行中，退出函数
+                if (this.intervalId != null) {
+                    return;
+                }
+                // 计时器为空，操作
+                this.intervalId = setInterval(() => {
+                    //console.log("刷新" + new Date());
+                    //this.init(); //加载数据函数
+                }, 100000);
+            },
+            // 停止定时器
+            clear() {
+                clearInterval(this.intervalId); //清除计时器
+                this.intervalId = null; //设置为null
+            },
+        },
+        mounted() {
+            //this.getClientIP();
+            this.init();
+        },
+        created() {
+            this.dataRefreh();
+        },
+        destroyed() {
+            // 在页面销毁后，清除计时器
+            this.clear();
+        }
+    });
+</script>
+<!--Begin core plugin -->
+
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/plugins/moment/moment.js"></script>
+<script src="/assets/js/jquery.slimscroll.js "></script>
+<script src="/assets/js/jquery.nicescroll.js"></script>
+<script src="/assets/js/functions.js"></script>
+<!-- End core plugin -->
+
+
+</html>

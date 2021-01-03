@@ -1,12 +1,15 @@
 package com.ctsi.controller;
 
 import com.ctsi.entity.TbOrder;
+import com.ctsi.entity.TbUser;
 import com.ctsi.service.TbOrderService;
 import com.ctsi.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Description:
@@ -18,6 +21,8 @@ public class OrderRestController {
 
     @Autowired
     private TbOrderService orderService;
+    @Autowired
+    private UserRestController userRestController;
 
     //查询订单详情
     @GetMapping("/api/order/detail/{orderId}")
@@ -31,5 +36,14 @@ public class OrderRestController {
         return orderService.getOrderPageListByStatus(status,page,20);
     }
 
+    @GetMapping("/api/order/userCurrentOrder")
+    public TbOrder getUserCurrentOrder(HttpServletRequest request) {
+        TbUser user = userRestController.getCurrentUser(request);
+        if(user == null) {
+            return null;
+        }
+        Integer userId = user.getId();
+        return orderService.getUserCurrentOrder(userId);
+    }
 
 }

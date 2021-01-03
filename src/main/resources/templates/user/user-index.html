@@ -67,8 +67,7 @@
                                         <span v-if="district!=''">{{district}}</span>
                                     </div><br />
                                 </h4>
-                                <form class="form-horizontal" method="POST" th:action="@{/order/add}"
-                                    enctype="multipart/form-data">
+                                <form class="form-horizontal" method="POST" th:action="@{/order/add}" enctype="multipart/form-data">
 
                                     <input th:if="${session.sessionUser!=null}" th:value="${session.sessionUser.id}"
                                         type="hidden" name="userId" id="currentUserId">
@@ -92,13 +91,15 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">收件人</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" th:value="${order.receiverName}" type="text" name="receiverName">
+                                            <input class="form-control" th:value="${order.receiverName}" type="text"
+                                                name="receiverName">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">联系方式</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" th:value="${order.receiverMobile}" type="text" name="receiverMobile">
+                                            <input class="form-control" th:value="${order.receiverMobile}" type="text"
+                                                name="receiverMobile">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -114,13 +115,12 @@
                                             [[${msg}]]
                                         </label>
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn btn-primary round" id="addButton"
-                                                th:if="${session.sessionUser!=null}"
+                                            <button type="submit" class="btn btn-primary round" id="addButton" th:if="${session.sessionUser!=null}"
                                                 onclick="return confirm('确定提交？')">提交</button>
                                         </div>
                                     </div>
 
-                                    
+
                                 </form>
                             </div>
                         </div>
@@ -131,46 +131,28 @@
 
 
                 <!--订单列表开始-->
-                <div class="col-md-12">
+                <div class="col-md-12" th:if="${session.sessionUser!=null && currentOrder!= null}">
                     <div class="white-box">
-                        <h2 class="header-title"> Projects </h2>
+                        <h2 class="header-title"> 当前下单 </h2>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Project Name</th>
-                                        <th>Start Date</th>
-                                        <th>Deadline Date</th>
-                                        <th>Status</th>
-                                        <th>Progress</th>
+                                        <th>订单号</th>
+                                        <th>物品重量</th>
+                                        <th>创建时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>Design new theme</td>
-                                        <td>10/10/2016</td>
-                                        <td>12/11/2016</td>
-                                        <td><span class="label label-warning">Pending</span></td>
+                                        <td>[[${currentOrder.orderCode}]]</td>
+                                        <td>[[${currentOrder.kg}]]</td>
+                                        <td> [[${#dates.format(currentOrder.createTime, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+                                        <td>等待接单中~</td>
                                         <td>
-                                            <div class="progress progress-striped progress-sm">
-                                                <div class="progress-bar progress-bar-warning" style="width: 25%;">
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Website Redesign</td>
-                                        <td>10/10/2016</td>
-                                        <td>12/11/2016</td>
-                                        <td><span class="label label-success">In Progress</span></td>
-                                        <td>
-                                            <div class="progress progress-striped progress-sm">
-                                                <div class="progress-bar progress-bar-success" style="width: 25%;">
-                                                </div>
-                                            </div>
+                                            <a class="btn btn-primary round" th:href="@{/user/order/detail/}+${currentOrder.id}">详情</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -356,6 +338,7 @@
         mounted() {
             //this.getClientIP();
             this.init();
+            this.getUserCurrentOrder();
         },
         created() {
             this.dataRefreh();
@@ -377,7 +360,7 @@
 
 <script>
     laydate.render({
-        elem: '#endTime', 
+        elem: '#endTime',
         theme: 'grid',
         type: 'datetime',
         trigger: 'click'

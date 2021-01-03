@@ -1,6 +1,7 @@
 package com.ctsi.controller;
 
 import com.ctsi.entity.TbOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import java.util.HashMap;
  */
 @Controller
 public class PageToController {
+    @Autowired
+    private OrderRestController orderRestController;
 
     //重定向的index页面
     @RequestMapping("/")
@@ -28,6 +31,7 @@ public class PageToController {
     @RequestMapping("/user/index")
     public String userMapIndex(HttpServletRequest request) {
         request.setAttribute("order",new TbOrder());
+        request.setAttribute("currentOrder",orderRestController.getUserCurrentOrder(request));
         request.setAttribute("msg","");
         return "user/user-index";
     }
@@ -37,6 +41,13 @@ public class PageToController {
     public String userOrderDetail(HttpServletRequest request,@PathVariable Integer orderId) {
         request.setAttribute("orderId",orderId);
         return "user/user-order-detail";
+    }
+
+    //派单员订单详情
+    @RequestMapping("/send/order/detail/{orderId}")
+    public String sendOrderDetail(HttpServletRequest request,@PathVariable Integer orderId) {
+        request.setAttribute("orderId",orderId);
+        return "send/send-order-detail";
     }
 
     //派单员地图展示

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-    <title>模板页面</title>
+    <title>订单详情</title>
 
     <!--Begin  Page Level  CSS -->
     <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
@@ -49,21 +49,27 @@
                     <div class="white-box">
                         <div class="post-header">
                             <div>
-                                <h4>订单号：{{ order.orderCode }}<br /><input type="hidden" id="orderId" th:value="${orderId}">
-                                    状态：正在配送
+                                <h4>订单单号：{{ order.orderCode }}<br /><input type="hidden" id="orderId" th:value="${orderId}">
+                                    订单状态：<span>
+                                        <span style="color:yellow" v-if="order.status == 'NOT_SEND'">等待接单</span>
+                                        <span style="color:blue" v-if="order.status == 'SENDING'">正在配送</span>
+                                        <span style="color:green" v-if="order.status == 'SUCCESS'">已完成</span>
+                                        <span style="color:red" v-if="order.status == 'CANCELED'">已取消</span>
+                                    </span>
+                                    <span th:if="${session.sessionUser.roleId eq 1}">
+                                        <span v-if="order.status === 'NOT_SEND' ">
+                                            <a class="btn btn-danger round" th:href="@{/user/order/canceled/}+${orderId}">取消订单</a>
+                                        </span>
+                                        <span th:if="${msg!=null}">[[${msg}]]</span>
+                                    </span>
+                                    <br />
+                                    订单位置：从<span style="color:brown">{{sendAddress}}</span>到
+                                    <span style="color:brown">{{initAddress}}</span><br />
+                                    物品重量：<span>{{order.kg}}kg</span><br/>
+                                    联系方式：<span>{{order.receiverName}}:{{order.receiverMobile}}</span><br/>
                                 </h4>
                             </div>
                         </div> <!-- /.post-header-->
-
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">详细地址</label>
-                                <div class="col-md-10">
-                                    <input class="form-control" value="" type="text" name="address" readonly>
-                                </div>
-                            </div>
-
-                        </div>
 
                         <div class="comment-info"></div>
                         <!--分割线-->
@@ -76,7 +82,7 @@
                         <!--/.timeline-comment-->
 
                     </div><!-- /.white-box-->
-
+                    <!-- 
                     <div class="white-box">
                         <form>
                             <div class="form-group">
@@ -87,47 +93,43 @@
 
                         </form>
                     </div>
+                    -->
                     <!--/.hite-box-->
 
                 </div>
                 <!--/.col-md-8-->
 
 
-                <div class="col-md-4">
-                    <div class="white-box">
-                        <h2 class="header-title">Skills</h2>
-                        <p>HTML5</p>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                            </div>
-                        </div>
-                        <p>CSS3</p>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="80"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                            </div>
-                        </div>
-                        <p>Bootstrap</p>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="90"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                            </div>
-                        </div>
-                    </div>
-                    <!--/.white-box-->
-
-
-                    <div class="white-box">
-                        <h2 class="header-title">About</h2>
+                <div class="col-md-4" th:if="${session.sessionUser.roleId eq 1}">
+                    <div class="white-box" v-if="order.status == 'SENDING'">
+                        <h2 class="header-title">确认收货</h2>
+                        <a class="btn btn-primary round" id="addButton" th:if="${session.sessionUser!=null}" th:href="@{/user/order/success/}+${orderId}"
+                            onclick="return confirm('请确认您已收款？')">点击确认收货</a>
+                        <!--
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae neque incidunt cumque,
                             dolore eveniet porro asperiores itaque! Eligendi minus cupiditate molestiae praesentium,
-                            facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>
+                            facilis, neque saepe, soluta sapiente aliquid modi sunt.</p>-->
                     </div>
                     <!--/.white-box-->
 
                 </div>
                 <!--/.col-md-4-->
+
+                <div class="col-md-4" th:if="${session.sessionUser.roleId eq 2}">
+                    <div class="white-box" v-if="order.status != 'SUCCESS' ">
+                        <h4>选择出行方式</h4>
+                        <select v-model="carType" id="carTypeId" @change="carTypeChange">
+                            <option value="driving">驾车</option>
+                            <option value="riding">骑行</option>
+                            <option value="walking">步行</option>
+                            <option value="transit">公交车</option>
+                        </select>
+                        <p id="carTypeResult"></p>
+
+                    </div>
+                    <!--/.white-box-->
+
+                </div>
 
             </div>
             <!--End row-->
@@ -154,6 +156,10 @@
                 orderId: null,
                 order: {},
                 initAddress: '',//取件地址
+                sendAddress: '',//出发地址
+                initPoint: null,//取件地址point
+                sendPoint: null,//出发地址point
+                carType: 'driving',//出行方式
             }
 
         },
@@ -183,6 +189,7 @@
                         map.addControl(cityControl);
 
                         var point = new BMapGL.Point(this.order.pointX, this.order.pointY);//创建点标注
+                        this.initPoint = point;
                         var marker = new BMapGL.Marker(point);
                         map.addOverlay(marker);
                         //设置取货点窗口
@@ -199,9 +206,73 @@
                         marker.addEventListener("click", function () {
                             map.openInfoWindow(infoWindow, point); //开启信息窗口
                         });
+
+                        //出发地址
+                        if (this.order.orderSend != null) {
+                            axios.get("/api/address/detail/xy?x=" + this.order.orderSend.pointX + '&y=' + this.order.orderSend.pointY).then(response => {
+                                this.sendAddress = response.data;
+                                let point = new BMapGL.Point(this.order.orderSend.pointX, this.order.orderSend.pointY);//创建点标注
+                                this.sendPoint = point;
+                                let marker = new BMapGL.Marker(point);
+                                map.addOverlay(marker);
+                                //设置取货点窗口
+                                let opts1 = {
+                                    width: 50,     // 信息窗口宽度
+                                    height: 25,     // 信息窗口高度
+                                    title: "出发地址", // 信息窗口标题
+                                    message: "---"
+                                }
+                                let infoWindow1 = new BMapGL.InfoWindow("地址：" + this.sendAddress, opts1);  // 创建信息窗口对象 
+                                map.openInfoWindow(infoWindow1, point); //开启信息窗口
+                                marker.addEventListener("click", function () {
+                                    map.openInfoWindow(infoWindow1, point); //开启信息窗口
+                                });
+
+
+                                if (this.carType === 'driving') {
+                                    var driving = new BMapGL.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true } });
+                                    driving.search(this.sendPoint, this.initPoint);
+                                } else if (this.carType === 'walking') {
+                                    var walking = new BMapGL.WalkingRoute(map, { renderOptions: { map: map, autoViewport: true } });
+                                    walking.search(this.sendPoint, this.initPoint);
+                                } else if (this.carType === 'transit') {
+                                    var output = '从' + this.sendAddress + '到' + this.initAddress + '坐公交需要：';
+                                    var transit = new BMapGL.TransitRoute(map, {
+                                        renderOptions: { map: map },
+                                        onSearchComplete: function (results) {
+                                            if (transit.getStatus() != BMAP_STATUS_SUCCESS) {
+                                                return;
+                                            }
+                                            var plan = results.getPlan(0);
+                                            output += '总时长：' + plan.getDuration(true);  //获取时间
+                                            output += '总路程：' + plan.getDistance(true);  //获取距离
+                                            $('#carTypeResult').css('display', 'block');
+                                            $('#carTypeResult').html(output);
+                                        },
+                                    });
+                                    transit.search(this.sendPoint, this.initPoint);
+                                } else if (this.carType === 'riding') {
+                                    var riding = new BMapGL.RidingRoute(map, {
+                                        renderOptions: { map: map }
+                                    });
+                                    riding.search(this.sendPoint, this.initPoint);
+                                }
+
+
+
+                            });
+                        }//if
+
+
                     });
 
                 });//end init
+            },
+
+            carTypeChange() {
+                var text = $("#carTypeId").val();
+                this.carType = text;
+                this.init();
             },
 
             // 定时刷新数据函数
