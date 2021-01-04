@@ -24,10 +24,13 @@ public class OrderController {
     private UserRestController userRestController;
     @Autowired
     private TbOrderService orderService;
+    @Autowired
+    private OrderRestController orderRestController;
 
     //保存新订单
     @RequestMapping("/order/add")
     public String saveOrder(TbOrder order, HttpServletRequest request) {
+        request.setAttribute("currentOrder",orderRestController.getUserCurrentOrder(request));
         if(order.getReceiverMobile() == null || order.getReceiverMobile().trim().equals("")) {
             request.setAttribute("msg","联系方式不能为空~");
             request.setAttribute("order",order);
