@@ -5,7 +5,6 @@ import com.ctsi.entity.TbOrder;
 import com.ctsi.rpc.BaiduRpc;
 import com.ctsi.util.PageResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;

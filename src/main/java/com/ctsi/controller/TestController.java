@@ -1,16 +1,10 @@
 package com.ctsi.controller;
 
-import com.ctsi.jsoup.GetBaiduIpUtils;
-import com.ctsi.rpc.BaiduRpc;
-import com.ctsi.util.IpUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -34,27 +28,5 @@ public class TestController {
     }
         return "user/user-index.html";
     }
-
-    @GetMapping("/test2")
-    @ResponseBody
-    public Object test2(HttpServletRequest request,String ip) throws IOException {
-
-        return BaiduRpc.getAddressByIp(ip);
-    }
-
-    @GetMapping("/test3")
-    public Object test3() throws IOException {
-
-
-        return "test-index";
-    }
-
-    //验证ca证书
-    @GetMapping("/.well-known/pki-validation/fileauth.txt")
-    @ResponseBody
-    public String testCa() {
-        return "2020122900000016gq1tn8urxcje2xcexf5yc54hhy7zbjpi60r8v7ccbgujo4c8";
-    }
-
 
 }

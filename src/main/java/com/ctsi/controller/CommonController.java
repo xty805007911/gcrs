@@ -5,7 +5,9 @@ import com.ctsi.service.TbUserService;
 import com.ctsi.util.PhoneFormatCheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 public class CommonController {
     @Autowired
     private TbUserService userService;
+
+    //验证ca证书
+    @GetMapping("/.well-known/pki-validation/fileauth.txt")
+    @ResponseBody
+    public String testCa() {
+        return "2020122900000016gq1tn8urxcje2xcexf5yc54hhy7zbjpi60r8v7ccbgujo4c8";
+    }
 
 
     //用户登陆
