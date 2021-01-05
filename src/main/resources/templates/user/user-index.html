@@ -150,7 +150,14 @@
                                         <td>[[${currentOrder.orderCode}]]</td>
                                         <td>[[${currentOrder.kg}]]</td>
                                         <td> [[${#dates.format(currentOrder.createTime, 'yyyy-MM-dd HH:mm:ss')}]]</td>
-                                        <td>等待接单中~</td>
+                                        <td>
+                                            <span th:if="${currentOrder.status eq 'NOT_SEND'}">
+                                                等待接单中~
+                                            </span>
+                                            <span th:if="${currentOrder.status eq 'SENDING'}">
+                                                收货员正在赶来~
+                                            </span>
+                                        </td>
                                         <td>
                                             <a class="btn btn-primary round" th:href="@{/user/order/detail/}+${currentOrder.id}">详情</a>
                                         </td>

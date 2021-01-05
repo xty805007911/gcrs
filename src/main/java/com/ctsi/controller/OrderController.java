@@ -125,7 +125,7 @@ public class OrderController {
 
         orderService.addSendOrder(order,currentUserId,pointX,pointY);
 
-        return "send/send-sending";
+        return "redirect:/send/index";
     }
 
 

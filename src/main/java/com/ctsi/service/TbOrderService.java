@@ -100,10 +100,8 @@ public class TbOrderService {
     //获取用户当前订单
     public TbOrder getUserCurrentOrder(Integer userId) {
         QueryWrapper<TbOrder> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status",Constant.ORDER_STATUS_NOT_SEND);
-        queryWrapper.or();
-        queryWrapper.eq("status",Constant.ORDER_STATUS_SENDING);
         queryWrapper.eq("user_id",userId);
+        queryWrapper.in("status",Constant.ORDER_STATUS_NOT_SEND,Constant.ORDER_STATUS_SENDING);
         queryWrapper.orderByDesc("id");
         return tbOrderMapper.selectOne(queryWrapper);
     }

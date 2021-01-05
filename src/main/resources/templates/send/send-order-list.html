@@ -97,18 +97,18 @@
                             <nav aria-label="Page navigation" style="text-align: center">
                                 <ul class="pagination">
                                     <li>
-                                        <a th:href="@{/order/user/list?page=}+${pageResult.page-1>0?pageResult.page-1:1}"
+                                        <a th:href="@{/order/send/list?page=}+${pageResult.page-1>0?pageResult.page-1:1}"
                                             aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
 
                                     <li th:each="i:${#numbers.sequence(1,pageResult.pageSize)}">
-                                        <a th:href="@{/order/user/list?page=}+${i}">[[${i}]]</a>
+                                        <a th:href="@{/order/send/list?page=}+${i}">[[${i}]]</a>
                                     </li>
 
                                     <li>
-                                        <a th:href="@{/order/user/list?page=}+${pageResult.page+1>pageResult.pageSize?pageResult.pageSize:pageResult.page+1}"
+                                        <a th:href="@{/order/send/list?page=}+${pageResult.page+1>pageResult.pageSize?pageResult.pageSize:pageResult.page+1}"
                                             aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>

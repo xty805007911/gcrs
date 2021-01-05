@@ -1,70 +1,68 @@
+<div class="left-side sticky-left-side" th:fragment="lefterBar">
 
-    <div class="left-side sticky-left-side" th:fragment="lefterBar">
-
-        <!--logo-->
-        <div class="logo">
-            <a href="/"><img src="/assets/images/logo.png" alt=""></a>
-        </div>
-
-        <div class="logo-icon text-center">
-            <a href="/"><img src="/assets/images/logo-icon.png" alt=""></a>
-        </div>
-        <!--logo-->
-
-        <div class="left-side-inner" th:if="${session.sessionUser != null }">
-            <!--Sidebar nav-->
-            <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 1}">
-                <li th:class="${activeUrl=='userOrder'?'menu-list nav-active':'menu-list'}">
-                    <a href="#"><i class="icon-layers"></i>
-                     <span>我的订单</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/order/user/list}">所有订单</a></li>
-                        <li><a th:href="@{/}"> 我要下单</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <!--End sidebar nav-->
-
-             <!--Sidebar nav-->
-             <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 2}">
-                <li th:class="${activeUrl=='send'?'menu-list nav-active':'menu-list'}">
-                    <a href="#"><i class="icon-layers"></i>
-                     <span>接单管理</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/order/send/list}">所有订单</a></li>
-                        <li><a th:href="@{/send/index}"> 我要接单</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <!--End sidebar nav-->
-
-             <!--Sidebar nav-->
-             <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 3}">
-                <li th:class="${activeUrl=='userManage'?'menu-list nav-active':'menu-list'}">
-                    <a href="#"><i class="icon-layers"></i>
-                     <span>用户管理</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/order/user/list}">我的所有订单</a></li>
-                        <li><a th:href="@{/active/toAdd}"> Activity Add</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <!--End sidebar nav-->
-
-
-            <!--Sidebar nav-->
-            <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 3}">
-                <li th:class="${activeUrl=='systemManage'?'menu-list nav-active':'menu-list'}">
-                    <a href="#"><i class="icon-layers"></i>
-                     <span>系统管理</span></a>
-                    <ul class="sub-menu-list">
-                        <li><a th:href="@{/manage/system/user/avatarList}">用户Avatar列表</a></li>
-                        <li><a th:href="@{/manage/system/user/avatar/toAdd}">用户Avatar添加</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <!--End sidebar nav-->
-
-        </div>
+    <!--logo-->
+    <div class="logo">
+        <a href="/"><img src="/assets/images/logo-icon.png" alt=""></a>
     </div>
-  
+
+    <div class="logo-icon text-center">
+        <a href="/"><img src="/assets/images/logo-icon.png" alt=""></a>
+    </div>
+    <!--logo-->
+
+    <div class="left-side-inner" th:if="${session.sessionUser != null }">
+        <!--Sidebar nav-->
+        <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 1}">
+            <li th:class="${activeUrl=='userOrder'?'menu-list nav-active':'menu-list'}">
+                <a href="#"><i class="icon-layers"></i>
+                    <span>我的订单</span></a>
+                <ul class="sub-menu-list">
+                    <li><a th:href="@{/order/user/list}">所有订单</a></li>
+                    <li><a th:href="@{/}"> 我要下单</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--End sidebar nav-->
+
+        <!--Sidebar nav-->
+        <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 2}">
+            <li th:class="${activeUrl=='send'?'menu-list nav-active':'menu-list'}">
+                <a href="#"><i class="icon-layers"></i>
+                    <span>接单管理</span></a>
+                <ul class="sub-menu-list">
+                    <li><a th:href="@{/order/send/list}">所有订单</a></li>
+                    <li><a th:href="@{/send/index}"> 我要接单</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--End sidebar nav-->
+
+        <!--Sidebar nav-->
+        <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 3}">
+            <li th:class="${activeUrl=='userManage'?'menu-list nav-active':'menu-list'}">
+                <a href="#"><i class="icon-layers"></i>
+                    <span>用户管理</span></a>
+                <ul class="sub-menu-list">
+                    <li><a th:href="@{/order/user/list}">我的所有订单</a></li>
+                    <li><a th:href="@{/active/toAdd}"> Activity Add</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--End sidebar nav-->
+
+
+        <!--Sidebar nav-->
+        <ul class="nav nav-pills nav-stacked custom-nav" th:if="${session.sessionUser.roleId eq 3}">
+            <li th:class="${activeUrl=='systemManage'?'menu-list nav-active':'menu-list'}">
+                <a href="#"><i class="icon-layers"></i>
+                    <span>系统管理</span></a>
+                <ul class="sub-menu-list">
+                    <li><a th:href="@{/manage/system/user/avatarList}">用户Avatar列表</a></li>
+                    <li><a th:href="@{/manage/system/user/avatar/toAdd}">用户Avatar添加</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!--End sidebar nav-->
+
+    </div>
+</div>
