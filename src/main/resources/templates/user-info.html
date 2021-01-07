@@ -50,26 +50,40 @@
                                 <div class="col-md-8">
                                     <div class="card-profile">
                                         <div class="profile-header">
-                                            <img th:src="${user.avatar}" alt="">
+                                            <img th:src="${user.avatar}" alt="" id="userAvatarImg">
                                         </div>
                                     </div>
-                                    <form class="form-horizontal" method="POST">
+                                    <form class="form-horizontal" method="POST" th:action="@{/user/info}">
+                                        <input type="hidden" name="id" th:value="${user.id}">
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">选择头像</label>
                                             <div class="col-md-10">
-                                                <select name="avatar">
+                                                <select name="avatar" id="avatarSelectId">
                                                     <option th:value="${user.avatar}">-----</option>
-                                                    <option th:each="item:${avatarList}" th:value="${item.url}" th:text="${item.name}" th:selected="${user.avatar eq item.url}"></option>
+                                                    <option th:each="item:${avatarList}" th:value="${item.url}" th:text="${item.name}"
+                                                        th:selected="${user.avatar eq item.url}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">详细地址</label>
+                                            <label class="col-md-2 control-label">真实姓名</label>
                                             <div class="col-md-10">
-                                                <input class="form-control" value="" type="text" name="address">
+                                                <input class="form-control" th:value="${user.realname}" type="text" name="realname">
                                             </div>
                                         </div>
-                                        <a href="" class="btn btn-primary round">修改</a>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">手机号</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" th:value="${user.mobile}" type="text" name="mobile">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">详细住址</label>
+                                            <div class="col-md-10">
+                                                <input class="form-control" th:value="${user.address}" type="text" name="address">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary round">修改</button>
                                     </form>
                                 </div>
                                 </tbody>
@@ -104,6 +118,15 @@
     <script src="/assets/js/functions.js"></script>
     <!-- End core plugin -->
 
+    <!--修改用户头像-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#avatarSelectId").change(function () {
+                var avatarSelectVal = $("#avatarSelectId").val();
+                $("#userAvatarImg").attr('src',avatarSelectVal);
+            });
+        });
+    </script>
 
 
 </body>

@@ -110,6 +110,8 @@ public class CommonController {
     @PostMapping("/user/info")
     public String updateUserInfo(HttpServletRequest request,TbUser formUser) {
         userService.updateUserInfo(formUser);
+        TbUser user = userService.getUserById(userRestController.getCurrentUser(request).getId());
+        request.getSession().setAttribute("sessionUser",user);
         return "redirect:/user/info";
     }
 
