@@ -94,11 +94,37 @@ public class TbUserService {
         return pageResult;
     }
 
+    //查询所有头像
+    public List<TbAvatar> avatarListAll() {
+        return tbAvatarMapper.selectList(null);
+    }
+
+
     //用户头像添加
     public void saveAvatar(TbAvatar avatar) {
         avatar.setEnabled(1);
         avatar.setCreateTime(new Date());
         tbAvatarMapper.insert(avatar);
+    }
+
+    //根据角色id查询用户集合
+    public PageResult<TbUser> userListByRole(Integer roleId,Integer page,Integer size) {
+        if(page == null || page <= 0) {
+            page = 1;
+        }
+        QueryWrapper<TbUser> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("role_id",roleId);
+        queryWrapper.orderByDesc("id");
+        PageHelper.startPage(page,size);
+        List<TbUser> userList = tbUserMapper.selectList(queryWrapper);
+        PageInfo<TbUser> pageInfo = new PageInfo<>(userList);
+        PageResult<TbUser> pageResult = new PageResult<>(pageInfo);
+        return pageResult;
+    }
+
+    //更新用户
+    public void updateUserInfo(TbUser user) {
+        tbUserMapper.updateById(user);
     }
 
 

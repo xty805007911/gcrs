@@ -6,6 +6,7 @@ import com.ctsi.util.PhoneFormatCheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 public class CommonController {
     @Autowired
     private TbUserService userService;
+    @Autowired
+    private UserRestController userRestController;
 
     //验证ca证书
     @GetMapping("/.well-known/pki-validation/fileauth.txt")
@@ -92,6 +95,22 @@ public class CommonController {
         //到登陆页面
         return "login";
 
+    }
+
+    //查询用户信息
+    @GetMapping("/user/info")
+    public String getUserInfo(HttpServletRequest request) {
+        TbUser user = userService.getUserById(userRestController.getCurrentUser(request).getId());
+        request.setAttribute("user",user);
+        request.setAttribute("avatarList",userService.avatarListAll());
+        return "/user-info";
+    }
+
+    //修改用户信息
+    @PostMapping("/user/info")
+    public String updateUserInfo(HttpServletRequest request,TbUser formUser) {
+        userService.updateUserInfo(formUser);
+        return "redirect:/user/info";
     }
 
 }
