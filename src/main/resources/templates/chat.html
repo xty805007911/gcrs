@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="icon" href="/assets/images/favicon.png" type="image/png">
+    <title>在线聊天</title>
+    <!--Begin  Page Level  CSS -->
+    <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <!--End  Page Level  CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.staticfile.org/element-ui/2.13.1/theme-chalk/index.css">
+</head>
+
+<body class="sticky-header">
+    <!--引入左侧菜单栏-->
+    <div th:replace="lefter :: lefterBar(activeUrl='index')"></div>
+    <!-- main content start-->
+    <div class="main-content">
+        <div th:replace="header :: headerBar"></div>
+        <!--body wrapper start-->
+        <div class="wrapper" id="chatApp">
+            <!--Start Page Title-->
+            <div class="page-title-box">
+                <h4 class="page-title">在线聊天 </h4>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"></a>
+                    </li>
+                    <li class="active">
+                    </li>
+                </ol>
+                <div class="clearfix"></div>
+            </div>
+            <!--End Page Title-->
+
+            <!--Start chat widget-->
+            <div class="col-md-10">
+                <div class="white-box">
+                    <h2 class="header-title">Chat</h2>
+                    <div class="chat-widget" style=" height: 400px; overflow-y:scroll">
+                        <ul class="chat-scroll-list" style="height: auto!important; overflow: auto!important;">
+                            <div>
+                                <li class="left">
+                                    <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                                        alt="" />
+                                    <div class="chat-info">
+                                        <a class="name" href="#">xm</a> AT
+                                        <span class="datetime">2021-1-8 14:57:00</span><br />
+                                        <span class="message">
+                                            111
+                                        </span>
+                                    </div>
+                                </li>
+                                <li class="right">
+                                    <img src="https://chart7appyyrzbzpa.ingress.ctbiyi.com/gcrs/user3.jpg" alt="" />
+                                    <div class="chat-info">
+                                        <a class="name" href="#">xh</a> AT
+                                        <span class="datetime">2021-1-8 14:57:00</span><br />
+                                        <span class="message">
+                                            222
+                                        </span>
+                                    </div>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <hr style="height:3px;border:none;border-top:3px double black;" />
+                    <input type="hidden" id="toUserId" th:value="${toUserId}">
+                    <input type="hidden" id="fromUserId" th:value="${fromUserId}">
+                    <textarea style="width: 100%; height: 100%" name="message" v-model="message"></textarea>
+                    <button type="submit" class="btn btn-primary round" id="addButton" @click="sendMsg()">发送</button>
+                </div>
+            </div>
+        </div>
+        <!--End chat widget-->
+    </div>
+    <!--End row-->
+    </div>
+    <!-- End Wrapper-->
+    <!--Start  Footer -->
+    <div th:replace="footer :: footerBar"></div>
+    <!--End footer -->
+    </div>
+    <!--End main content -->
+    <!--Begin core plugin -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- End core plugin -->
+    <script src="http://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <script src="http://cdn.staticfile.org/axios/0.19.2/axios.min.js"></script>
+    <script src="http://cdn.staticfile.org/element-ui/2.13.1/index.js"></script>
+
+
+    <script>
+        new Vue({
+            el: '#chatApp',
+            data: {
+                toUserId: 0,
+                fromUserId: 0,
+                intervalId: null,
+                message: '',
+            },
+            methods: {
+                init() {
+                    this.toUserId = $('#toUserId').val();
+                    this.fromUserId = $('#fromUserId').val();
+                    axios.get('/chat/list?providerId=' + this.providerId).then(response => {
+                        this.result = response.data;
+                        this.msgList = response.data.list;
+                        this.msgList = this.msgList.reverse();
+                    });
+                },
+
+                sendMsg() {
+
+                    this.providerId = document.getElementById('providerId').value;
+                    axios.get('/chat/toProvider?providerId=' + this.providerId + '&message=' + this.message).then(response => {
+                        this.message = '';
+                    });
+                },
+                // 定时刷新数据函数
+                dataRefreh() {
+                    // 计时器正在进行中，退出函数
+                    if (this.intervalId != null) {
+                        return;
+                    }
+                    // 计时器为空，操作
+                    this.intervalId = setInterval(() => {
+                        //console.log("刷新" + new Date());
+                        this.init(); //加载数据函数
+                    }, 10000);
+                },
+                // 停止定时器
+                clear() {
+                    clearInterval(this.intervalId); //清除计时器
+                    this.intervalId = null; //设置为null
+                },
+            },
+            mounted() {
+                this.init();
+            },
+            created() {
+                this.dataRefreh();
+            },
+            destroyed() {
+                // 在页面销毁后，清除计时器
+                this.clear();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -73,4 +73,12 @@ public class PageToController {
         return "system-manage/avatar-add";
     }
 
+    // 去聊天页面
+    @RequestMapping("/chat/to/{toUserId}")
+    public String toChat(HttpServletRequest request,@PathVariable Integer toUserId) {
+        request.setAttribute("toUserId",toUserId);// test 5
+        request.setAttribute("fromUserId",6);
+        return "chat";
+    }
+
 }
