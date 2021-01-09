@@ -65,8 +65,21 @@
                                     <br />
                                     订单位置：从<span style="color:brown">{{sendAddress}}</span>到
                                     <span style="color:brown">{{initAddress}}</span><br />
-                                    物品重量：<span>{{order.kg}}kg</span><br/>
-                                    联系方式：<span>{{order.receiverName}}:{{order.receiverMobile}}</span><br/>
+                                    物品重量：<span>{{order.kg}}kg</span><br />
+                                    联系方式：<span>{{order.receiverName}}:{{order.receiverMobile}}</span><br />
+
+                                    <!--如果是用户-->
+                                    <span th:if="${session.sessionUser.roleId eq 1}">
+                                        <span v-if="order.status == 'SENDING' || order.status == 'SUCCESS'">
+                                            <a class="btn btn-primary round" :href="'/chat/to/'+order.orderSend.sendId">联系接单员</a>
+                                        </span>
+                                    </span>
+
+                                    <span th:if="${session.sessionUser.roleId eq 2}">
+                                        <span v-if="order.status == 'SENDING' || order.status == 'SUCCESS'">
+                                            <a class="btn btn-primary round" :href="'/chat/to/'+order.userId">联系用户</a>
+                                        </span>
+                                    </span>
                                 </h4>
                             </div>
                         </div> <!-- /.post-header-->

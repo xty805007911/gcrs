@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 public class PageToController {
     @Autowired
     private OrderRestController orderRestController;
+    @Autowired
+    private UserRestController userRestController;
 
     //重定向的index页面
     @RequestMapping("/")
@@ -77,7 +79,7 @@ public class PageToController {
     @RequestMapping("/chat/to/{toUserId}")
     public String toChat(HttpServletRequest request,@PathVariable Integer toUserId) {
         request.setAttribute("toUserId",toUserId);// test 5
-        request.setAttribute("fromUserId",6);
+        request.setAttribute("fromUserId",userRestController.getCurrentUser(request).getId());
         return "chat";
     }
 

@@ -21,7 +21,7 @@ public class TbChat {
     private Integer fromUserId;
     private Integer toUserId;
     private String message;
-    private Date create_time;
+    private Date createTime;
 
     @TableField(exist = false)
     private TbUser toUser;
